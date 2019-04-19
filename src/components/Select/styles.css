@@ -6,6 +6,11 @@
   justify-content: center;
 }
 
+.field-group {
+  display: flex;
+  margin-bottom: 30px;
+}
+
 .field-group .field:first-child {
   margin-right: 30px;
 }

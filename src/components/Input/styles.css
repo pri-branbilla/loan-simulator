@@ -1,0 +1,52 @@
+@import "../../colors.css";
+
+.field-group {
+  display: flex;
+  margin-bottom: 30px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.field-group .field:first-child {
+  margin-right: 30px;
+}
+
+.field input[type="text"] {
+  color: var(--emperor);
+  border: 1px solid var(--nobel);
+  background-color: var(--alabaster);
+  border-radius: 4px;
+  padding: 10px 5px;
+  width: 150px;
+}
+
+.field input[type="range"] {
+  transform: translateY(5px);
+}
+
+.form__fields {
+  max-width: 400px;
+  min-width: 400px;
+}
+
+.range {
+  transform: translateY(11px);
+}
+
+.range__values {
+  display: flex;
+  justify-content: space-between;
+}
+
+.range__values span {
+  font-size: .6rem;
+  font-weight: 100;
+}
+
+.field input[type="range"] {
+  transform: translateY(5px);
+}
