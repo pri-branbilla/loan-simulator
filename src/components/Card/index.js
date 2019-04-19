@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import './styles.css'
 
 export class Card extends React.Component {
@@ -28,4 +29,10 @@ export class Card extends React.Component {
       </div>
     )
   }
+}
+
+Card.propTypes = {
+  installmentAmount: PropTypes.string.isRequired,
+  totalAmount: PropTypes.string.isRequired,
+  interestRate: PropTypes.string.isRequired,
 }
