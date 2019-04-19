@@ -4,13 +4,22 @@ import { InputWrapper } from '../InputWrapper'
 import './styles.css'
 
 export class Input extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      value: this.props.value
+    }
+  }
+
   onChange = (e) => {
+    this.setState({
+      value: e.target.value
+    })
     this.props.onChange(e.target.id, e.target.value)
   }
 
   render () {
-    const { inputId, label, value, min, max } = this.props
-
+    const { inputId, label, min, max } = this.props
     return (
       <div className="field-group">
         <InputWrapper
@@ -25,7 +34,7 @@ export class Input extends React.Component {
             onChange={this.onChange}
             name={inputId}
             id={inputId}
-            value={value}
+            value={this.state.value}
           />
         </InputWrapper>
         <div className="field">
@@ -37,8 +46,8 @@ export class Input extends React.Component {
               onChange={this.onChange}
               min={min}
               max={max}
-              value={value}
-              step="1"
+              value={this.state.value}
+              step="10"
             />
             <div className="range__values">
               <span>{min}</span>

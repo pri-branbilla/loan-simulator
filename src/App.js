@@ -1,12 +1,13 @@
 import React from 'react'
-import { Header, Card } from './components'
+import { Header } from './components'
+import { Simulator } from './group/Simulator'
 
 export class App extends React.Component {
   render () {
     return (
       <React.Fragment>
         <Header />
-        <Card installmentAmount="465,00" totalAmount="11.112,00" interestRate="111,12%" />
+        <Simulator />
       </React.Fragment>
     )
   }
