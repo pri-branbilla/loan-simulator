@@ -1,68 +1,102 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<img src="https://www.creditas.com.br/static/images/logo-creditas-color-8367919c2a.svg" width="400">
 
-## Available Scripts
+# Challenge Frontend - Creditas
+Esse é um teste de nivelamento. Queremos deixar claro que não é esperado que todos consigam realizá-lo por completo, já que é destinado a todos os níveis de carreira. Esperamos que todas as pessoas que queiram trabalhar conosco tentem realizá-lo.
 
-In the project directory, you can run:
+Focamos aqui em design de código e design patterns em JavaScript. O objetivo é avaliar sua experiência em escrever **código de fácil manutenção, baixo acoplamento e alta coesão**.
 
-### `npm start`
+A Creditas trabalha sempre com feedbacks construtivos e, portanto, daremos sempre uma atenção especial para todos que submeterem o teste, passando para o candidato quais são os pontos positivos do seu teste e os pontos a melhorar. Vale a pena tentar! :)
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Apresentação do problema
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+Você deverá melhorar a calculadora de simulação de crédito implementada neste projeto.
 
-### `npm test`
+A interface está previamente definida, assim como os estilos.
+Os desafios incluem refatorar o código e implementar funcionalidades (detalhados mais abaixo).
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Sinta-se à vontade para componentizar o que achar que deve ser componentizado.
+Só gostariamos que o teste fosse realizado com Javascript puro, nosso querido vanilla. O que acha de encarar o desafio?
 
-### `npm run build`
+O estado atual da calculadora:
+<img style="display: block; margin: 0 auto;" src="./layout.png">
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Funcionalidade esperada
 
-### `npm run eject`
+A aplicação deverá permitir ao usuário escolher o tipo de garantia que quer utilizar no pedido de empréstimo: ***"Veículo"*** ou ***"Imóvel"*** (o preenchimento padrão é *"Veículo"*) e seguir as regras de cálculo abaixo.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+**Regras em comum**
+- Taxa de IOF: 6.38%;
+- Taxa de Juros: 2.34%;
+- Valor máximo para empréstimo: 80% do valor da garantia;
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+*Fórmula do valor total a pagar*
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```javascript
+const valorTotalAPagar = ((iof / 100) + (taxaDeJuros / 100) + (prazo / 1000) + 1) * valorDoEmprestimo
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+*Fórmula do valor da parcela*
 
-## Learn More
+```javascript
+const valorDaParcela = valorTotalAPagar / prazo
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Desafios a cumprir
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### CSS
+* **Refatorar para facilitar manutenção**
 
-### Code Splitting
+Atualmente o arquivo CSS possui muitos estilos, o que dificulta a legibilidade. Esperamos que você faça uma boa arganização dos estilos, isolando-os para torná-los mais legíveis e, assim, facilitar a manutenção.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+### HTML / JS
+* **Adicionar a opção de garantia _"Imóvel"_** (com as respectivas regras de cálculo)
+* **Refatorar código antigo (e organizar código novo) para facilitar manutenção**
 
-### Analyzing the Bundle Size
+Hoje, a Creditas possui dois produtos: empréstimo com garantia de veículo e de imóvel. O projeto atual tem implementada apenas a opção de garantia *"Veículo"*, você deve implementar a opção *"Imóvel"*.
+Ao mudar o tipo de garantia no elemento `select`, o usuário deve ver as opções de valores e prazos referentes ao tipo selecionado. Ou seja, ao selecionar veículo ou imóvel, você deve mostrar na tela opções diferentes nos campos do formulário e no slider. Veja abaixo os valores correspondentes:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+**Veículo**
+- Valor mínimo para empréstimo: R$ 3.000,00;
+- Valor máximo para empréstimo: R$ 100.000,00;
+- Prazos para veículo : 24 / 36 / 48 meses;
 
-### Making a Progressive Web App
+**Imóvel**
+- Valor mínimo para empréstimo: R$ 30.000,00;
+- Valor máximo para empréstimo: R$ 4.500.000,00;
+- Prazos para imóvel : 120 / 180 / 240 meses;
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+Por fim, você deve exibir o valor da parcela no campo correspondente a cada mudança nos inputs do formulário.
 
-### Advanced Configuration
+## Desenvolvimento
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+### Pré-requisitos
+Você precisa minimamente do [NodeJs](https://nodejs.org/en/) instalado para rodar a apliação e o [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) para baixar o repositório e submeter um pull-request
 
-### Deployment
+### Configurações para rodar o ambiente
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+Você precisa conhecer um pouco sobre o Git, que é uma ferramenta que nos ajuda a fazer o controle de versão dos nossos arquivos.
 
-### `npm run build` fails to minify
+```shell
+git clone https://github.com/Creditas/challenge.git
+cd frontend/
+npm install
+npm start
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Se tudo estiver ok, acesse a url [http://localhost:4000/](http://localhost:4000/)
+
+### Construído com
+Este projeto possui algumas bibliotecas para nos auxiliar nos testes e rodar a aplicação, são eles: *Webpack*, *Babel*, *Jest* e *Eslint*.
+
+## Tests
+
+Para rodar os testes é necessário executar o comando abaixo:
+
+```shell
+npm test
+```
+
+## Feedback (opcional)
+Aqui na Creditas o feedback faz parte da nossa cultura, seria muito gratificante se, tendo concluído ou não o teste, você pudesse contribuir com nosso processo de contração respondendo [este pequeno questionário.](https://docs.google.com/forms/d/e/1FAIpQLSdTNMc2JqnvNxy4J3gAN-vQqsfG6PscH5hVQRC9dyMK1PlnRw/viewform?usp=sf_link)
