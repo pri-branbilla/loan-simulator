@@ -1,8 +1,11 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import { Header } from './components'
+import { Header, Card } from './components'
 
-ReactDOM.render(
-  <Header />,
-  document.getElementById('root')
-)
+export class App extends React.Component {
+  render = () => (
+    <React.Fragment>
+      <Header />
+      <Card installmentAmount="465,00" totalAmount="11.112,00" interestRate="111,12%" />
+    </React.Fragment>
+  )
+}
