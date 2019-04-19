@@ -4,6 +4,10 @@ import { InputWrapper } from '../InputWrapper'
 import './styles.css'
 
 export class Select extends React.Component {
+  onChange = (e) => {
+    this.props.onChange(e.target.id, e.target.value)
+  }
+
   render () {
     const { inputId, label, options } = this.props
 
@@ -12,7 +16,7 @@ export class Select extends React.Component {
         inputId={inputId}
         label={label}
       >
-        <select name={inputId} id={inputId} required>
+        <select name={inputId} id={inputId} onChange={this.onChange} required>
           {options.map(
             (option, i) => (
               <option key={i + option.value} value={option.value}>
@@ -32,5 +36,6 @@ Select.propTypes = {
   options: PropTypes.arrayOf(PropTypes.shape({
     value: PropTypes.node,
     label: PropTypes.string,
-  })).isRequired
+  })).isRequired,
+  onChange: PropTypes.func.isRequired,
 }
