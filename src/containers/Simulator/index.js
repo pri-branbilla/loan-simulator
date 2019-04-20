@@ -39,6 +39,7 @@ export class Simulator extends React.Component {
     const valueMaxLoan = 0.8 * this.state.guaranteeValue
     this.setState({
       maxLoan: guaranteeMaxLoan < valueMaxLoan ? guaranteeMaxLoan : valueMaxLoan,
+      loanValue: this.state.loanValue > valueMaxLoan ? valueMaxLoan : this.state.loanValue
     })
   }
 
@@ -46,6 +47,7 @@ export class Simulator extends React.Component {
     return this.setState({
       selectedGuarantee: guaranteeOptions[value],
       loanValue: guaranteeOptions[value].minLoan,
+      selectedInstallments: guaranteeOptions[value].installments[0].value,
       finalAmount: totalAmount(
         guaranteeOptions[value].minLoan,
         guaranteeOptions[value].installments[0].value,
@@ -87,7 +89,7 @@ export class Simulator extends React.Component {
                   inputId="guaranteeValue"
                   label="Valor da Garantia"
                   value={guaranteeValue}
-                  min={12000}
+                  min={1.25*minLoan}
                   max={2000000}
                   onChange={this.changeState}
                 />
