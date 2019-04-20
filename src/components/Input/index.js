@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { InputWrapper } from '../InputWrapper'
+import { formatter } from '../../utils/lib'
 import './styles.css'
 
 export class Input extends React.Component {
@@ -11,15 +12,17 @@ export class Input extends React.Component {
     }
   }
 
-  onChange = (e) => {
-    this.setState({
-      value: e.target.value
-    })
-    this.props.onChange(e.target.id, e.target.value)
+  componentWillReceiveProps = (props) => {
+    const { value } = this.props
+    if (props.value !== value) {
+      this.setState({
+        value: props.value
+      })
+    }
   }
 
   render () {
-    const { inputId, label, min, max } = this.props
+    const { inputId, label, min, max, onChange } = this.props
     return (
       <div className="field-group">
         <InputWrapper
@@ -31,7 +34,7 @@ export class Input extends React.Component {
             required
             min={min}
             max={max}
-            onChange={this.onChange}
+            onChange={(e) => onChange(e.target.id, e.target.value)}
             name={inputId}
             id={inputId}
             value={this.state.value}
@@ -43,15 +46,15 @@ export class Input extends React.Component {
               type="range"
               name={inputId}
               id={inputId}
-              onChange={this.onChange}
+              onChange={(e) => onChange(e.target.id, e.target.value)}
               min={min}
               max={max}
               value={this.state.value}
               step="10"
             />
             <div className="range__values">
-              <span>{min}</span>
-              <span>{max}</span>
+              <span>{formatter(min)}</span>
+              <span>{formatter(max)}</span>
             </div>
           </div>
         </div>

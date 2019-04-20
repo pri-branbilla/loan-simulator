@@ -1,33 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Select, Input, Card } from '../../components'
+import { guaranteeOptions, selectGuarantee } from './constants'
 import './styles.css'
-
-const installmentOpt = [
-  {
-    value: 24,
-    label: "24"
-  },
-  {
-    value: 36,
-    label: "36"
-  },
-  {
-    value: 48,
-    label: "48"
-  }
-]
-
-const guaranteeOpt = [
-  {
-    value: "veiculo",
-    label: "Veículo"
-  },
-  {
-    value: "imovel",
-    label: "Imóvel"
-  }
-]
 
 export class Simulator extends React.Component {
   constructor(props) {
@@ -35,9 +10,9 @@ export class Simulator extends React.Component {
 
     this.state = {
       installments: 24,
-      guarantee: "veiculo",
       guaranteeValue: "14400",
-      loanValue: "57000",
+      loanValue: 57000,
+      selectedGuarantee: guaranteeOptions.vehicle
     }
   }
 
@@ -47,12 +22,19 @@ export class Simulator extends React.Component {
     })
   }
 
+  changeGuarantee = (name, value) => {
+    return this.setState({
+      selectedGuarantee: guaranteeOptions[value],
+      loanValue: guaranteeOptions[value].minLoan
+    })
+  }
+
   sendData = (e) => {
     e.preventDefault()
-    console.log(this.state)
   }
 
   render () {
+    const { minLoan, maxLoan, installments } = this.state.selectedGuarantee
     return (
       <main className="main">
         <h1 className="main__title">Realize uma simulação de crédito utilizando seu bem como garantia.</h1>
@@ -63,14 +45,14 @@ export class Simulator extends React.Component {
                 <Select
                   inputId="installments"
                   label="Número de parcelas"
-                  options={installmentOpt}
+                  options={installments}
                   onChange={this.changeState}
                 />
                 <Select
                   inputId="guarantee"
                   label="Garantia"
-                  options={guaranteeOpt}
-                  onChange={this.changeState}
+                  options={selectGuarantee}
+                  onChange={this.changeGuarantee}
                 />
               </div>
               <div className="valor-garantia">
@@ -88,8 +70,8 @@ export class Simulator extends React.Component {
                   inputId="loanValue"
                   label="Valor do Empréstimo"
                   value={this.state.loanValue}
-                  min={30000}
-                  max={60000}
+                  min={minLoan}
+                  max={maxLoan}
                   onChange={this.changeState}
                 />
               </div>
