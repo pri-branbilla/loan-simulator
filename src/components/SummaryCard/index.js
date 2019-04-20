@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { formatter } from '../../utils/lib'
+import { formatter } from '../../lib/utils'
 import './styles.css'
 
 export class SummaryCard extends React.Component {

@@ -28,7 +28,7 @@ import CreditasChallenge, {
   toStringFormValues,
   Send,
   Submit
-} from '../src/utils'
+} from '../src/utils2'
 
 function initializeAppMock () {
   document.body.innerHTML = `

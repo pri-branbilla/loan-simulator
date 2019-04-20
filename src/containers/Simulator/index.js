@@ -1,7 +1,7 @@
 import React from 'react'
 import { Select, SelectorInput, SummaryCard } from '../../components'
 import { guaranteeOptions, selectGuarantee } from './constants'
-import { totalAmount, installmentValue, monthlyFee, realLoanValue } from '../../utils/lib'
+import { totalAmount, installmentValue, monthlyFee, realLoanValue } from '../../lib/utils'
 import './styles.css'
 
 export class Simulator extends React.Component {
@@ -106,7 +106,7 @@ export class Simulator extends React.Component {
             />
           </form>
         </section>
-        <footer className="footer">*Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere quas non harum dolor eligendi id, ab corrupti blanditiis suscipit ex odit error alias minus. Enim dolores eum officiis quae rem!*</footer>
+        <footer className="footer">*O valor do empréstimo pode ser de até 80% do valor da garantia declarada.*</footer>
       </main>
     )
   }
