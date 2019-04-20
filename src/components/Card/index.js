@@ -11,7 +11,7 @@ export class Card extends React.Component {
         <div className="quota__container">
           <h4>Valor da Parcela</h4>
           <div className="quota">
-            <strong>R$</strong>
+            <strong>R$ </strong>
             <span>{installmentAmount}</span>
           </div>
         </div>

@@ -41,8 +41,8 @@ export class Input extends React.Component {
           <div className="range">
             <input
               type="range"
-              name={inputId + "-range"}
-              id={inputId + "-range"}
+              name={inputId}
+              id={inputId}
               onChange={this.onChange}
               min={min}
               max={max}

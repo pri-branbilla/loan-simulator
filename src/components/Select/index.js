@@ -4,19 +4,15 @@ import { InputWrapper } from '../InputWrapper'
 import './styles.css'
 
 export class Select extends React.Component {
-  onChange = (e) => {
-    this.props.onChange(e.target.id, e.target.value)
-  }
-
   render () {
-    const { inputId, label, options } = this.props
+    const { inputId, label, options, onChange } = this.props
 
     return (
       <InputWrapper
         inputId={inputId}
         label={label}
       >
-        <select name={inputId} id={inputId} onChange={this.onChange} required>
+        <select name={inputId} id={inputId} onChange={(e) => onChange(e.target.id, e.target.value)} required>
           {options.map(
             (option, i) => (
               <option key={i + option.value} value={option.value}>

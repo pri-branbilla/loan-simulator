@@ -47,7 +47,8 @@ export class Simulator extends React.Component {
     })
   }
 
-  sendData = () => {
+  sendData = (e) => {
+    e.preventDefault()
     console.log(this.state)
   }
 
@@ -56,7 +57,7 @@ export class Simulator extends React.Component {
       <main className="main">
         <h1 className="main__title">Realize uma simulação de crédito utilizando seu bem como garantia.</h1>
         <section className="section__container">
-          <form className="form" name="form" onSubmit={() => this.sendData()}>
+          <form className="form" name="form" method="POST" onSubmit={(e) => this.sendData(e)}>
             <div className="form__fields">
               <div className="field-group">
                 <Select
