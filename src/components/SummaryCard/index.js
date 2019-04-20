@@ -34,8 +34,14 @@ export class SummaryCard extends React.Component {
   }
 }
 
+SummaryCard.defaultProps = {
+  installmentAmount: 0,
+  amount: 0,
+  feeRate: 0
+}
+
 SummaryCard.propTypes = {
-  installmentAmount: PropTypes.number.isRequired,
-  amount: PropTypes.number.isRequired,
-  feeRate: PropTypes.number.isRequired,
+  installmentAmount: PropTypes.number,
+  amount: PropTypes.number,
+  feeRate: PropTypes.number,
 }

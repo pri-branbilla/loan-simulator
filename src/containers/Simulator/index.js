@@ -11,7 +11,8 @@ export class Simulator extends React.Component {
     this.state = {
       selectedInstallments: 24,
       guaranteeValue: 1000000,
-      loanValue: realLoanValue(3000),
+      loanValue: 3000,
+      maxLoan: 0.8 * guaranteeOptions.vehicle.maxLoan,
       selectedGuarantee: guaranteeOptions.vehicle,
       finalAmount: totalAmount(3000, 24, 14400),
     }
@@ -21,19 +22,30 @@ export class Simulator extends React.Component {
     this.setState({
       [name]: value,
     },
-    () => this.setState({
-      finalAmount: totalAmount(
-        this.state.loanValue,
-        this.state.selectedInstallments,
-        this.state.guaranteeValue
-      )
-    }))
+    () => {
+        this.setMaxLoan()
+        return this.setState({
+          finalAmount: totalAmount(
+            this.state.loanValue,
+            this.state.selectedInstallments,
+            this.state.guaranteeValue
+        )
+      })
+    })
+  }
+
+  setMaxLoan = () => {
+    const guaranteeMaxLoan = this.state.selectedGuarantee.maxLoan
+    const valueMaxLoan = 0.8 * this.state.guaranteeValue
+    this.setState({
+      maxLoan: guaranteeMaxLoan < valueMaxLoan ? guaranteeMaxLoan : valueMaxLoan,
+    })
   }
 
   changeGuarantee = (name, value) => {
     return this.setState({
       selectedGuarantee: guaranteeOptions[value],
-      loanValue: realLoanValue(guaranteeOptions[value].minLoan),
+      loanValue: guaranteeOptions[value].minLoan,
       finalAmount: totalAmount(
         guaranteeOptions[value].minLoan,
         guaranteeOptions[value].installments[0].value,
@@ -44,11 +56,12 @@ export class Simulator extends React.Component {
 
   sendData = (e) => {
     e.preventDefault()
+    console.log(this.state)
   }
 
   render () {
-    const { finalAmount, selectedInstallments, loanValue, guaranteeValue } = this.state
-    const { minLoan, maxLoan, installments } = this.state.selectedGuarantee
+    const { finalAmount, selectedInstallments, loanValue, guaranteeValue, maxLoan } = this.state
+    const { minLoan, installments } = this.state.selectedGuarantee
     return (
       <main className="main">
         <h1 className="main__title">Realize uma simulação de crédito utilizando seu bem como garantia.</h1>
@@ -73,7 +86,7 @@ export class Simulator extends React.Component {
                 <SelectorInput
                   inputId="guaranteeValue"
                   label="Valor da Garantia"
-                  value={this.state.guaranteeValue}
+                  value={guaranteeValue}
                   min={12000}
                   max={2000000}
                   onChange={this.changeState}
@@ -83,7 +96,7 @@ export class Simulator extends React.Component {
                 <SelectorInput
                   inputId="loanValue"
                   label="Valor do Empréstimo"
-                  value={this.state.loanValue}
+                  value={loanValue}
                   min={minLoan}
                   max={maxLoan}
                   onChange={this.changeState}

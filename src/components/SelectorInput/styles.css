@@ -15,7 +15,7 @@
   margin-right: 30px;
 }
 
-.field input[type="text"] {
+.field input[type="number"] {
   color: var(--emperor);
   border: 1px solid var(--nobel);
   background-color: var(--alabaster);

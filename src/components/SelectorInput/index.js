@@ -21,8 +21,22 @@ export class SelectorInput extends React.Component {
     }
   }
 
+  maxLength = (max, min, name, value) => {
+    let actualValue = value
+    if (String(value).length > String(max).length) {
+      actualValue = Number(String(value).slice(0, String(max).length))
+    }
+    if (value > max) {
+      actualValue = max
+    }
+    if (value < min) {
+      actualValue = min
+    }
+    this.props.onChange(name, actualValue)
+  }
+
   render () {
-    const { inputId, label, min, max, onChange } = this.props
+    const { inputId, label, min, max } = this.props
     return (
       <div className="field-group">
         <InputWrapper
@@ -30,14 +44,15 @@ export class SelectorInput extends React.Component {
           label={label}
         >
           <input
-            type="text"
+            type="number"
             required
             min={min}
             max={max}
-            onChange={(e) => onChange(e.target.id, e.target.value)}
+            onChange={(e) => this.maxLength(max, min, e.target.id, e.target.value)}
             name={inputId}
             id={inputId}
             value={this.state.value}
+            step="0.01"
           />
         </InputWrapper>
         <div className="field">
@@ -46,7 +61,8 @@ export class SelectorInput extends React.Component {
               type="range"
               name={inputId}
               id={inputId}
-              onChange={(e) => onChange(e.target.id, e.target.value)}
+              onInput={(e) => this.maxLength(max, min, e.target.id, e.target.value)}
+              onChange={(e) => this.maxLength(max, min, e.target.id, e.target.value)}
               min={min}
               max={max}
               value={this.state.value}
@@ -63,11 +79,15 @@ export class SelectorInput extends React.Component {
   }
 }
 
+SelectorInput.defaultProps = {
+  value: 0
+}
+
 SelectorInput.propTypes = {
   inputId: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  value: PropTypes.number.isRequired,
-  min: PropTypes.number,
-  max: PropTypes.number,
+  value: PropTypes.number,
+  min: PropTypes.number.isRequired,
+  max: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
 }
