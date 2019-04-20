@@ -86,6 +86,7 @@ export class Simulator extends React.Component {
               </div>
               <div className="valor-garantia">
                 <SelectorInput
+                  hideRange
                   inputId="guaranteeValue"
                   label="Valor da Garantia"
                   value={guaranteeValue}

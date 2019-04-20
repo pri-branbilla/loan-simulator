@@ -3,16 +3,11 @@
 .field-group {
   display: flex;
   margin-bottom: 30px;
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
   justify-content: center;
 }
 
 .field-group .field:first-child {
-  margin-right: 30px;
+  margin: 0 15px 0 15px;
 }
 
 .field input[type="number"] {
@@ -21,7 +16,7 @@
   background-color: var(--alabaster);
   border-radius: 4px;
   padding: 10px 5px;
-  width: 150px;
+  /* width: 150px; */
 }
 
 .field input[type="range"] {
