@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div
+  className="form__result"
+>
+  <div
+    className="quota__container"
+  >
+    <h4>
+      Valor da Parcela
+    </h4>
+    <div
+      className="quota"
+    >
+      <strong>
+        R$ 
+      </strong>
+      <span>
+        465,00
+      </span>
+    </div>
+  </div>
+  <div
+    className="amount_container"
+  >
+    <h4>
+      Total a pagar
+    </h4>
+    <p>
+      R$123,456.00
+    </p>
+  </div>
+  <div
+    className="tax__container"
+  >
+    <h4>
+      Taxa de juros (mês)
+    </h4>
+    <p>
+      111,12%
+       %
+    </p>
+  </div>
+  <button
+    className="button"
+  >
+    Solicitar
+  </button>
+</div>
+`;
