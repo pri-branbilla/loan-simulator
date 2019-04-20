@@ -1,5 +1,5 @@
 import React from 'react'
-import { Input } from '.'
+import { SelectorInput } from '.'
 import renderer from 'react-test-renderer'
 import Adapter from 'enzyme-adapter-react-16'
 import { mount, configure } from 'enzyme'
@@ -8,7 +8,7 @@ configure({adapter: new Adapter()})
 
 it('renders correctly', () => {
   const tree = renderer.create(
-    <Input
+    <SelectorInput
       inputId="inputId"
       label="Test"
       onChange={() => {}}
@@ -21,7 +21,7 @@ it('test input text value change', () => {
   let inputValue = 'test'
   const changeValue = (name, value) => inputValue = value
   const tree = mount(
-    <Input
+    <SelectorInput
       inputId="inputId"
       label="Test"
       onChange={changeValue}

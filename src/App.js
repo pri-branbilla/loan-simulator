@@ -1,6 +1,6 @@
 import React from 'react'
 import { Header } from './components'
-import { Simulator } from './group/Simulator'
+import { Simulator } from './containers/Simulator'
 
 export class App extends React.Component {
   render () {

@@ -4,7 +4,7 @@ import { InputWrapper } from '../InputWrapper'
 import { formatter } from '../../utils/lib'
 import './styles.css'
 
-export class Input extends React.Component {
+export class SelectorInput extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -63,7 +63,7 @@ export class Input extends React.Component {
   }
 }
 
-Input.propTypes = {
+SelectorInput.propTypes = {
   inputId: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   value: PropTypes.number.isRequired,

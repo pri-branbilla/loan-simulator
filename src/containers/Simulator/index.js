@@ -1,7 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { Select, Input, Card } from '../../components'
+import { Select, SelectorInput, SummaryCard } from '../../components'
 import { guaranteeOptions, selectGuarantee } from './constants'
+import { totalAmount, installmentValue, monthlyFee, realLoanValue } from '../../utils/lib'
 import './styles.css'
 
 export class Simulator extends React.Component {
@@ -9,23 +9,36 @@ export class Simulator extends React.Component {
     super(props)
 
     this.state = {
-      installments: 24,
-      guaranteeValue: "14400",
-      loanValue: 57000,
-      selectedGuarantee: guaranteeOptions.vehicle
+      selectedInstallments: 24,
+      guaranteeValue: 1000000,
+      loanValue: realLoanValue(3000),
+      selectedGuarantee: guaranteeOptions.vehicle,
+      finalAmount: totalAmount(3000, 24, 14400),
     }
   }
 
   changeState = (name, value) => {
     this.setState({
       [name]: value,
-    })
+    },
+    () => this.setState({
+      finalAmount: totalAmount(
+        this.state.loanValue,
+        this.state.selectedInstallments,
+        this.state.guaranteeValue
+      )
+    }))
   }
 
   changeGuarantee = (name, value) => {
     return this.setState({
       selectedGuarantee: guaranteeOptions[value],
-      loanValue: guaranteeOptions[value].minLoan
+      loanValue: realLoanValue(guaranteeOptions[value].minLoan),
+      finalAmount: totalAmount(
+        guaranteeOptions[value].minLoan,
+        guaranteeOptions[value].installments[0].value,
+        this.state.guaranteeValue
+      )
     })
   }
 
@@ -34,6 +47,7 @@ export class Simulator extends React.Component {
   }
 
   render () {
+    const { finalAmount, selectedInstallments, loanValue, guaranteeValue } = this.state
     const { minLoan, maxLoan, installments } = this.state.selectedGuarantee
     return (
       <main className="main">
@@ -43,7 +57,7 @@ export class Simulator extends React.Component {
             <div className="form__fields">
               <div className="field-group">
                 <Select
-                  inputId="installments"
+                  inputId="selectedInstallments"
                   label="Número de parcelas"
                   options={installments}
                   onChange={this.changeState}
@@ -56,17 +70,17 @@ export class Simulator extends React.Component {
                 />
               </div>
               <div className="valor-garantia">
-                <Input
+                <SelectorInput
                   inputId="guaranteeValue"
                   label="Valor da Garantia"
                   value={this.state.guaranteeValue}
                   min={12000}
-                  max={24000}
+                  max={2000000}
                   onChange={this.changeState}
                 />
               </div>
               <div className="emprestimo">
-                <Input
+                <SelectorInput
                   inputId="loanValue"
                   label="Valor do Empréstimo"
                   value={this.state.loanValue}
@@ -76,10 +90,19 @@ export class Simulator extends React.Component {
                 />
               </div>
             </div>
-            <Card
-              installmentAmount="465,00"
-              totalAmount="11.112,00"
-              interestRate="111,12%"
+            <SummaryCard
+              installmentAmount={installmentValue(finalAmount, selectedInstallments)}
+              amount={finalAmount}
+              feeRate={
+                monthlyFee(
+                  installmentValue(
+                    finalAmount,
+                    selectedInstallments
+                  ),
+                  realLoanValue(loanValue, guaranteeValue),
+                  selectedInstallments
+                )
+              }
             />
           </form>
         </section>
@@ -87,13 +110,4 @@ export class Simulator extends React.Component {
       </main>
     )
   }
-}
-
-Simulator.propTypes = {
-  inputId: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  value: PropTypes.number.isRequired,
-  min: PropTypes.number,
-  max: PropTypes.number,
-  onChange: PropTypes.func.isRequired,
 }
