@@ -13,13 +13,17 @@ const changeTotalAmountValue = (totalAmountElement, installmentsElement, loanAmo
   totalAmountElement.innerHTML = utils.currencyFormatter(finalValue)
 }
 
+const updateMaxValue = (maxValue, rangeElement) => {
+  rangeElement.setAttribute('max', maxValue)
+  rangeElement.parentNode.children[1].children[1].innerHTML = utils.currencyFormatter(maxValue)
+}
+
 const changeInputElement = (inputElement, rangeElement, minValue, maxValue) => {
   rangeElement.setAttribute('min', minValue)
-  rangeElement.value = minValue
-  rangeElement.setAttribute('max', maxValue)
+  rangeElement.value = (maxValue + minValue) / 2
   rangeElement.parentNode.children[1].children[0].innerHTML = utils.currencyFormatter(minValue)
-  rangeElement.parentNode.children[1].children[1].innerHTML = utils.currencyFormatter(maxValue)
-  inputElement.value = utils.currencyFormatter(minValue)
+  updateMaxValue(maxValue, rangeElement)
+  inputElement.value = utils.currencyFormatter(rangeElement.value)
 }
 
 const verifyValue = (loanValue, rangeElement) => {
@@ -33,14 +37,21 @@ const verifyValue = (loanValue, rangeElement) => {
   return realValue
 }
 
+const setMaxLoan = (value, maxLoan) => {
+  if (utils.maxLoan(value) > maxLoan) {
+    return maxLoan
+  }
+  return utils.maxLoan(value)
+}
+
 const changeOptions = (selectElement, selectedOption) => {
   const loanRange = document.getElementById('valor-emprestimo-range')
   const loanInput = document.getElementById('valor-emprestimo')
   const warrantyRange = document.getElementById('valor-garantia-range')
   const warrantyInput = document.getElementById('valor-garantia')
   utils.renderOptions(selectElement, selectedOption.installments)
-  changeInputElement(loanInput, loanRange, selectedOption.minLoan, selectedOption.maxLoan)
   changeInputElement(warrantyInput, warrantyRange, 1.25 * selectedOption.minLoan, 9000000)
+  changeInputElement(loanInput, loanRange, selectedOption.minLoan, selectedOption.maxLoan)
 }
 
 const updateCard = () => {
@@ -69,7 +80,7 @@ const inputBlur = (inputElement, rangeElement, inputValue) => {
   console.log(realValue)
   rangeElement.value = realValue
   inputElement.value = utils.currencyFormatter(realValue)
-  updateCard()
+  return realValue
 }
 
 export function Send (values) {
@@ -110,6 +121,8 @@ export function handleChangeRangeVehicleUnderWarranty (
   vehicleWarrantyElement
 ) {
   warrantyRangeElement.addEventListener('change', function (event) {
+    const maxValue = setMaxLoan(event.target.value, utils.warranyOptions[document.getElementById('garantia').value].maxLoan)
+    updateMaxValue(maxValue, document.getElementById('valor-emprestimo-range'))
     vehicleWarrantyElement.value =
       utils.currencyFormatter(Number(event.target.value))
   })
@@ -131,7 +144,14 @@ export function handleBlurTextInput () {
     }
   })
   textInputGuarantee.addEventListener('blur', function (event) {
-    inputBlur(textInputGuarantee, document.getElementById('valor-garantia-range'), event.target.value)
+    const value = inputBlur(
+      textInputGuarantee,
+      document.getElementById('valor-garantia-range'),
+      event.target.value
+    )
+    const maxValue = setMaxLoan(value, utils.warranyOptions[document.getElementById('garantia').value].maxLoan)
+    updateMaxValue(maxValue, document.getElementById('valor-emprestimo-range'))
+    updateCard()
   })
   const textInputLoan = document.getElementById('valor-emprestimo')
   textInputLoan.addEventListener('input', function (event) {
@@ -140,7 +160,12 @@ export function handleBlurTextInput () {
     }
   })
   textInputLoan.addEventListener('blur', function (event) {
-    inputBlur(textInputLoan, document.getElementById('valor-emprestimo-range'), event.target.value)
+    inputBlur(
+      textInputLoan,
+      document.getElementById('valor-emprestimo-range'),
+      event.target.value
+    )
+    updateCard()
   })
 }
 
@@ -149,9 +174,9 @@ export function handleChangeLoanAmount (
   loanAmountElement
 ) {
   loanAmountRangeElement.addEventListener('change', function (event) {
-    updateCard()
     const newValue = utils.currencyFormatter(Number(event.target.value))
     loanAmountElement.value = newValue
+    updateCard()
   })
 }
 
