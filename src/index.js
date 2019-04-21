@@ -15,16 +15,16 @@ export const toStringFormValues = values => {
   const IOF = 6.38 / 100
   const INTEREST_RATE = 2.34 / 100
   const TIME = values.find(match('parcelas')).value / 1000
-  const VEHICLE_LOAN_AMOUNT = values.find(match('valor-emprestimo')).value
+  const LOAN_AMOUNT = values.find(match('valor-emprestimo')).value
 
   return `Confirmação\n${values
     .map(value => `Campo: ${value.field}, Valor: ${value.value}`)
     .join('\n')}`.concat(
-      `\nTotal ${(IOF + INTEREST_RATE + TIME + 1) * VEHICLE_LOAN_AMOUNT}`
-    )
+    `\nTotal ${(IOF + INTEREST_RATE + TIME + 1) * LOAN_AMOUNT}`
+  )
 }
 
-export function Send(values) {
+export function Send (values) {
   return new Promise((resolve, reject) => {
     try {
       resolve(toStringFormValues(values))
@@ -34,7 +34,7 @@ export function Send(values) {
   })
 }
 
-export function Submit(formElement) {
+export function Submit (formElement) {
   formElement.addEventListener('submit', function (event) {
     event.preventDefault()
     if (checkFormValidity(formElement)) {
@@ -45,7 +45,7 @@ export function Submit(formElement) {
   })
 }
 
-export function handleChangeRangeVehicleUnderWarranty(
+export function handleChangeRangeVehicleUnderWarranty (
   warrantyRangeElement,
   vehicleWarrantyElement
 ) {
@@ -56,7 +56,7 @@ export function handleChangeRangeVehicleUnderWarranty(
   })
 }
 
-export function handleChangeVehicleLoanAmount(
+export function handleChangeVehicleLoanAmount (
   loanAmountRangeElement,
   loanAmountElement
 ) {
@@ -68,11 +68,11 @@ export function handleChangeVehicleLoanAmount(
 }
 
 export default class CreditasChallenge {
-  static initialize() {
+  static initialize () {
     this.registerEvents()
   }
 
-  static registerEvents() {
+  static registerEvents () {
     Submit(document.querySelector('.form'))
 
     handleChangeRangeVehicleUnderWarranty(
