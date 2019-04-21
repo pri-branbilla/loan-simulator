@@ -12,7 +12,7 @@ export class Simulator extends React.Component {
       selectedInstallments: 24,
       guaranteeValue: 1000000,
       loanValue: 3000,
-      maxLoan: 0.8 * guaranteeOptions.vehicle.maxLoan,
+      maxLoan: guaranteeOptions.vehicle.maxLoan,
       selectedGuarantee: guaranteeOptions.vehicle,
       finalAmount: totalAmount(3000, 24, 14400),
     }
@@ -48,12 +48,13 @@ export class Simulator extends React.Component {
       selectedGuarantee: guaranteeOptions[value],
       loanValue: guaranteeOptions[value].minLoan,
       selectedInstallments: guaranteeOptions[value].installments[0].value,
+      maxLoan: guaranteeOptions[value].maxLoan,
       finalAmount: totalAmount(
         guaranteeOptions[value].minLoan,
         guaranteeOptions[value].installments[0].value,
         this.state.guaranteeValue
       )
-    })
+    }, () => this.setMaxLoan())
   }
 
   sendData = (e) => {
