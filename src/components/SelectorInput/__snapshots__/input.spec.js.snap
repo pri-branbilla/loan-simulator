@@ -4,6 +4,11 @@ exports[`renders correctly 1`] = `
 <div
   className="field-group"
 >
+  <p
+    className="inline-label"
+  >
+    R$
+  </p>
   <div
     className="field"
   >
@@ -14,10 +19,15 @@ exports[`renders correctly 1`] = `
     </label>
     <input
       id="inputId"
+      max={900}
+      min={100}
       name="inputId"
+      onBlur={[Function]}
       onChange={[Function]}
       required={true}
-      type="text"
+      step="0.01"
+      type="number"
+      value={0}
     />
   </div>
   <div
@@ -28,19 +38,23 @@ exports[`renders correctly 1`] = `
     >
       <input
         id="inputId"
+        max={900}
+        min={100}
         name="inputId"
         onChange={[Function]}
+        onInput={[Function]}
         step="10"
         type="range"
+        value={0}
       />
       <div
         className="range__values"
       >
         <span>
-          R$NaN
+          R$100.00
         </span>
         <span>
-          R$NaN
+          R$900.00
         </span>
       </div>
     </div>
