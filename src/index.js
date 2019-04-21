@@ -138,11 +138,6 @@ export function handleChangeWarrantyType (
 
 export function handleBlurTextInput () {
   const textInputGuarantee = document.getElementById('valor-garantia')
-  textInputGuarantee.addEventListener('input', function (event) {
-    if ((event.target.value).indexOf('-') > -1) {
-      textInputGuarantee.value = (event.target.value).replace('-', '')
-    }
-  })
   textInputGuarantee.addEventListener('blur', function (event) {
     const value = inputBlur(
       textInputGuarantee,
@@ -151,14 +146,12 @@ export function handleBlurTextInput () {
     )
     const maxValue = setMaxLoan(value, utils.warranyOptions[document.getElementById('garantia').value].maxLoan)
     updateMaxValue(maxValue, document.getElementById('valor-emprestimo-range'))
+    document.getElementById('valor-emprestimo').value = utils.currencyFormatter(
+      document.getElementById('valor-emprestimo-range').value
+    )
     updateCard()
   })
   const textInputLoan = document.getElementById('valor-emprestimo')
-  textInputLoan.addEventListener('input', function (event) {
-    if ((event.target.value).indexOf('-') > -1) {
-      textInputLoan.value = (event.target.value).replace('-', '')
-    }
-  })
   textInputLoan.addEventListener('blur', function (event) {
     inputBlur(
       textInputLoan,
