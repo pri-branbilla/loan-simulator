@@ -116,15 +116,19 @@ export function handleChangeQuotaValue (
   })
 }
 
-export function handleChangeRangeVehicleUnderWarranty (
+export function handleChangeRangeWarranty (
   warrantyRangeElement,
   vehicleWarrantyElement
 ) {
   warrantyRangeElement.addEventListener('change', function (event) {
     const maxValue = setMaxLoan(event.target.value, utils.warranyOptions[document.getElementById('garantia').value].maxLoan)
     updateMaxValue(maxValue, document.getElementById('valor-emprestimo-range'))
+    document.getElementById('valor-emprestimo').value = utils.currencyFormatter(
+      document.getElementById('valor-emprestimo-range').value
+    )
     vehicleWarrantyElement.value =
       utils.currencyFormatter(Number(event.target.value))
+    updateCard()
   })
 }
 
@@ -199,7 +203,7 @@ export default class CreditasChallenge {
       document.getElementById('valor-emprestimo')
     )
 
-    handleChangeRangeVehicleUnderWarranty(
+    handleChangeRangeWarranty(
       document.getElementById('valor-garantia-range'),
       document.getElementById('valor-garantia')
     )
