@@ -1,6 +1,6 @@
 import './styles.css'
 
-const { calcAmount, currencyFormatter, formatValue, monthlyFee, unformatter, replaceDot } = require('./lib/utils.js')
+const utils = require('./lib/utils.js')
 
 export const maxLoan = (value) => {
   return value * 0.8
@@ -18,13 +18,24 @@ export const getFormValues = formElement =>
 
 export const toStringFormValues = values => {
   const match = matchString => value => value.field === matchString
-  const finalValue = calcAmount(values.find(match('parcelas')), values.find(match('valor-emprestimo')))
+  const finalValue = utils.calcAmount(values.find(match('parcelas')), values.find(match('valor-emprestimo')))
 
   return `Confirmação\n${values
     .map(value => `Campo: ${value.field}, Valor: ${value.value}`)
     .join('\n')}`.concat(
-    `\nTotal ${currencyFormatter(finalValue)}`
+    `\nTotal ${utils.currencyFormatter(finalValue)}`
   )
+}
+
+const changeInstallmentValue = (quotaElement, installmentsElement, loanAmountElement) => {
+  const installmentValue = utils.calcAmount(installmentsElement, loanAmountElement) / installmentsElement.value
+  document.querySelector('.tax__container p').innerHTML = `${utils.replaceDot(utils.monthlyFee(installmentValue, utils.unformatter(loanAmountElement.value), installmentsElement.value))} %`
+  quotaElement.innerHTML = utils.formatValue(installmentValue)
+}
+
+const changeTotalAmountValue = (totalAmountElement, installmentsElement, loanAmountElement) => {
+  const finalValue = utils.calcAmount(installmentsElement, loanAmountElement)
+  totalAmountElement.innerHTML = utils.currencyFormatter(finalValue)
 }
 
 export function Send (values) {
@@ -48,17 +59,6 @@ export function Submit (formElement) {
   })
 }
 
-const changeInstallmentValue = (quotaElement, installmentsElement, loanAmountElement) => {
-  const installmentValue = calcAmount(installmentsElement, loanAmountElement) / installmentsElement.value
-  document.querySelector('.tax__container p').innerHTML = `${replaceDot(monthlyFee(installmentValue, unformatter(loanAmountElement.value), installmentsElement.value))} %`
-  quotaElement.innerHTML = formatValue(installmentValue)
-}
-
-const changeTotalAmountValue = (totalAmountElement, installmentsElement, loanAmountElement) => {
-  const finalValue = calcAmount(installmentsElement, loanAmountElement)
-  totalAmountElement.innerHTML = currencyFormatter(finalValue)
-}
-
 export function handleChangeQuotaValue (
   quotaElement,
   totalAmountElement,
@@ -78,7 +78,16 @@ export function handleChangeRangeVehicleUnderWarranty (
   const MIN_VALUE = 12000.0
   warrantyRangeElement.addEventListener('change', function (event) {
     vehicleWarrantyElement.value =
-      currencyFormatter((Number(MIN_VALUE) * Number(event.target.value)) / 100 + Number(MIN_VALUE))
+      utils.currencyFormatter((Number(MIN_VALUE) * Number(event.target.value)) / 100 + Number(MIN_VALUE))
+  })
+}
+
+export function handleBlurTextInput () {
+  const textInput = document.querySelector('.field input')
+  textInput.addEventListener('input', function (event) {
+    if ((event.target.value).indexOf('-') > -1) {
+      textInput.value = (event.target.value).replace('-', '')
+    }
   })
 }
 
@@ -98,8 +107,8 @@ export function handleChangeLoanAmount (
       document.getElementById('parcelas'),
       loanAmountElement
     )
-    loanAmountElement.value =
-      currencyFormatter((Number(MIN_VALUE) * Number(event.target.value)) / 100 + Number(MIN_VALUE))
+    const newValue = utils.currencyFormatter((Number(MIN_VALUE) * Number(event.target.value)) / 100 + Number(MIN_VALUE))
+    loanAmountElement.value = newValue
   })
 }
 
@@ -124,7 +133,7 @@ export default class CreditasChallenge {
 
   static registerEvents () {
     Submit(document.querySelector('.form'))
-
+    handleBlurTextInput()
     handleChangeQuotaValue(
       document.querySelector('.quota span'),
       document.querySelector('.amount_container p'),
