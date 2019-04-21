@@ -21,80 +21,80 @@ export class SelectorInput extends React.Component {
     }
   }
 
-  maxLength = (max, min, name, value) => {
+  actualValue = (max, min, name, value) => {
     let actualValue = value
-    if (String(value).length > String(max).length) {
-      actualValue = Number(String(value).slice(0, String(max).length))
+    if (value > min) {
+      if (value > max) {
+        actualValue = max
+      }
+      if (value < 0) {
+        actualValue = value * (-1)
+      }
+      return this.props.onChange(name, actualValue)
     }
-    if (value > max) {
-      actualValue = max
+    return this.props.onChange(name, min)
+  }
+
+  minValue = (name, value) => {
+    if (value < this.props.min) {
+      return this.props.onChange(name, this.props.min)
     }
-    if (value < 0) {
-      actualValue = value * (-1)
-    }
-    this.props.onChange(name, actualValue)
+    return this.props.onChange(name, value)
   }
 
   render () {
-    const { inputId, label, min, max, hideRange } = this.props
-    const fieldGroupStyle = hideRange ? "field-group only-input" : "field-group"
-    const inputWidth = hideRange ? { width: '100%' } : { width: 150 }
+    const { inputId, label, min, max } = this.props
     return (
-      <div className={fieldGroupStyle}>
+      <div className="field-group">
         <InputWrapper
-          hideRange={hideRange}
           inputId={inputId}
           label={label}
         >
           <input
-            style={inputWidth}
             type="number"
             required
             min={min}
             max={max}
-            onChange={(e) => this.maxLength(max, min, e.target.id, e.target.value)}
+            onBlur={(e) => this.minValue(e.target.id, e.target.value)}
+            onChange={(e) => this.actualValue(max, min, e.target.id, e.target.value)}
             name={inputId}
             id={inputId}
             value={this.state.value}
             step="0.01"
           />
         </InputWrapper>
-        { !hideRange && (
-          <div className="field">
-            <div className="range">
-              <input
-                type="range"
-                name={inputId}
-                id={inputId}
-                onInput={(e) => this.maxLength(max, min, e.target.id, e.target.value)}
-                onChange={(e) => this.maxLength(max, min, e.target.id, e.target.value)}
-                min={min}
-                max={max}
-                value={this.state.value}
-                step="10"
-              />
-              <div className="range__values">
-                <span>{formatter(min)}</span>
-                <span>{formatter(max)}</span>
-              </div>
+        <div className="field">
+          <div className="range">
+            <input
+              type="range"
+              name={inputId}
+              id={inputId}
+              onInput={(e) => this.actualValue(max, min, e.target.id, e.target.value)}
+              onChange={(e) => this.actualValue(max, min, e.target.id, e.target.value)}
+              min={min}
+              max={max}
+              value={this.state.value}
+              step="10"
+            />
+            <div className="range__values">
+              <span>{formatter(min)}</span>
+              <span>{formatter(max)}</span>
             </div>
           </div>
-        )}
+        </div>
       </div>
     )
   }
 }
 
 SelectorInput.defaultProps = {
-  value: 0,
-  hideRange: false,
+  value: 0
 }
 
 SelectorInput.propTypes = {
   inputId: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   value: PropTypes.number,
-  hideRange: PropTypes.bool,
   min: PropTypes.number.isRequired,
   max: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
