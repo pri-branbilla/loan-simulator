@@ -17,6 +17,8 @@ const changeOptions = (selectElement, selectedOption) => {
   console.log(selectedOption)
   const loanRange = document.getElementById('valor-emprestimo-range')
   const loanInput = document.getElementById('valor-emprestimo')
+  const warrantyRange = document.getElementById('valor-garantia-range')
+  const warrantyInput = document.getElementById('valor-garantia')
   utils.renderOptions(selectElement, selectedOption.installments)
   loanRange.setAttribute('min', selectedOption.minLoan)
   loanRange.value = selectedOption.minLoan
@@ -24,6 +26,12 @@ const changeOptions = (selectElement, selectedOption) => {
   loanRange.parentNode.children[1].children[0].innerHTML = utils.currencyFormatter(selectedOption.minLoan)
   loanRange.parentNode.children[1].children[1].innerHTML = utils.currencyFormatter(selectedOption.maxLoan)
   loanInput.value = utils.currencyFormatter(selectedOption.minLoan)
+  warrantyRange.setAttribute('min', 1.25 * selectedOption.minLoan)
+  warrantyRange.value = 1.25 * selectedOption.minLoan
+  warrantyRange.setAttribute('max', 9000000)
+  warrantyRange.parentNode.children[1].children[0].innerHTML = utils.currencyFormatter(1.25 * selectedOption.minLoan)
+  warrantyRange.parentNode.children[1].children[1].innerHTML = utils.currencyFormatter(9000000)
+  warrantyInput.value = utils.currencyFormatter(1.25 * selectedOption.minLoan)
 }
 
 const updateCard = () => {
@@ -81,10 +89,9 @@ export function handleChangeRangeVehicleUnderWarranty (
   warrantyRangeElement,
   vehicleWarrantyElement
 ) {
-  const MIN_VALUE = 12000.0
   warrantyRangeElement.addEventListener('change', function (event) {
     vehicleWarrantyElement.value =
-      utils.currencyFormatter((Number(MIN_VALUE) * Number(event.target.value)) / 100 + Number(MIN_VALUE))
+      utils.currencyFormatter(Number(event.target.value))
   })
 }
 
@@ -104,7 +111,13 @@ export function handleBlurTextInput () {
     }
   })
   textInputGuarantee.addEventListener('blur', function (event) {
+    var realValue = utils.unformatter(event.target.value)
+    const minValue = 1.25 * utils.selectedWarranty(document.getElementById('garantia').value).minLoan
+    if (realValue < minValue) {
+      realValue = minValue
+    }
     updateCard()
+    document.getElementById('valor-garantia-range').value = realValue
   })
   const textInputLoan = document.getElementById('valor-emprestimo')
   textInputLoan.addEventListener('input', function (event) {
@@ -113,8 +126,13 @@ export function handleBlurTextInput () {
     }
   })
   textInputLoan.addEventListener('blur', function (event) {
+    var realValue = utils.unformatter(event.target.value)
+    const minValue = utils.selectedWarranty(document.getElementById('garantia').value).minLoan
+    if (realValue < minValue) {
+      realValue = minValue
+    }
     updateCard()
-    document.getElementById('valor-emprestimo-range').value = utils.unformatter(event.target.value)
+    document.getElementById('valor-emprestimo-range').value = realValue
   })
 }
 
@@ -122,8 +140,6 @@ export function handleChangeLoanAmount (
   loanAmountRangeElement,
   loanAmountElement
 ) {
-  const MIN_VALUE = utils.selectedWarranty(document.getElementById('garantia').value).minLoan
-  console.log(MIN_VALUE)
   loanAmountRangeElement.addEventListener('change', function (event) {
     updateCard()
     const newValue = utils.currencyFormatter(Number(event.target.value))
