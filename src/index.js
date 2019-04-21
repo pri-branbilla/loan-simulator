@@ -13,25 +13,34 @@ const changeTotalAmountValue = (totalAmountElement, installmentsElement, loanAmo
   totalAmountElement.innerHTML = utils.currencyFormatter(finalValue)
 }
 
+const changeInputElement = (inputElement, rangeElement, minValue, maxValue) => {
+  rangeElement.setAttribute('min', minValue)
+  rangeElement.value = minValue
+  rangeElement.setAttribute('max', maxValue)
+  rangeElement.parentNode.children[1].children[0].innerHTML = utils.currencyFormatter(minValue)
+  rangeElement.parentNode.children[1].children[1].innerHTML = utils.currencyFormatter(maxValue)
+  inputElement.value = utils.currencyFormatter(minValue)
+}
+
+const verifyValue = (loanValue, rangeElement) => {
+  var realValue = utils.unformatter(loanValue)
+  if (realValue < rangeElement.getAttribute('min')) {
+    return rangeElement.getAttribute('min')
+  }
+  if (realValue > rangeElement.getAttribute('max')) {
+    return rangeElement.getAttribute('max')
+  }
+  return realValue
+}
+
 const changeOptions = (selectElement, selectedOption) => {
-  console.log(selectedOption)
   const loanRange = document.getElementById('valor-emprestimo-range')
   const loanInput = document.getElementById('valor-emprestimo')
   const warrantyRange = document.getElementById('valor-garantia-range')
   const warrantyInput = document.getElementById('valor-garantia')
   utils.renderOptions(selectElement, selectedOption.installments)
-  loanRange.setAttribute('min', selectedOption.minLoan)
-  loanRange.value = selectedOption.minLoan
-  loanRange.setAttribute('max', selectedOption.maxLoan)
-  loanRange.parentNode.children[1].children[0].innerHTML = utils.currencyFormatter(selectedOption.minLoan)
-  loanRange.parentNode.children[1].children[1].innerHTML = utils.currencyFormatter(selectedOption.maxLoan)
-  loanInput.value = utils.currencyFormatter(selectedOption.minLoan)
-  warrantyRange.setAttribute('min', 1.25 * selectedOption.minLoan)
-  warrantyRange.value = 1.25 * selectedOption.minLoan
-  warrantyRange.setAttribute('max', 9000000)
-  warrantyRange.parentNode.children[1].children[0].innerHTML = utils.currencyFormatter(1.25 * selectedOption.minLoan)
-  warrantyRange.parentNode.children[1].children[1].innerHTML = utils.currencyFormatter(9000000)
-  warrantyInput.value = utils.currencyFormatter(1.25 * selectedOption.minLoan)
+  changeInputElement(loanInput, loanRange, selectedOption.minLoan, selectedOption.maxLoan)
+  changeInputElement(warrantyInput, warrantyRange, 1.25 * selectedOption.minLoan, 9000000)
 }
 
 const updateCard = () => {
@@ -49,6 +58,17 @@ const updateCard = () => {
 
 const resetPage = (selectElement, selectedOption) => {
   changeOptions(selectElement, selectedOption)
+  updateCard()
+}
+
+const inputBlur = (inputElement, rangeElement, inputValue) => {
+  var realValue = verifyValue(
+    inputValue,
+    rangeElement
+  )
+  console.log(realValue)
+  rangeElement.value = realValue
+  inputElement.value = utils.currencyFormatter(realValue)
   updateCard()
 }
 
@@ -111,13 +131,7 @@ export function handleBlurTextInput () {
     }
   })
   textInputGuarantee.addEventListener('blur', function (event) {
-    var realValue = utils.unformatter(event.target.value)
-    const minValue = 1.25 * utils.selectedWarranty(document.getElementById('garantia').value).minLoan
-    if (realValue < minValue) {
-      realValue = minValue
-    }
-    updateCard()
-    document.getElementById('valor-garantia-range').value = realValue
+    inputBlur(textInputGuarantee, document.getElementById('valor-garantia-range'), event.target.value)
   })
   const textInputLoan = document.getElementById('valor-emprestimo')
   textInputLoan.addEventListener('input', function (event) {
@@ -126,13 +140,7 @@ export function handleBlurTextInput () {
     }
   })
   textInputLoan.addEventListener('blur', function (event) {
-    var realValue = utils.unformatter(event.target.value)
-    const minValue = utils.selectedWarranty(document.getElementById('garantia').value).minLoan
-    if (realValue < minValue) {
-      realValue = minValue
-    }
-    updateCard()
-    document.getElementById('valor-emprestimo-range').value = realValue
+    inputBlur(textInputLoan, document.getElementById('valor-emprestimo-range'), event.target.value)
   })
 }
 
