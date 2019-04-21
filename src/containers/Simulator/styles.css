@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Ubuntu');
 @import "../../colors.css";
 
+#root {
+  height: 100%;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -26,6 +30,7 @@ body {
   justify-content: center;
   align-items: center;
   padding: 0 10px;
+  height: 100%;
 }
 
 .main__title {
