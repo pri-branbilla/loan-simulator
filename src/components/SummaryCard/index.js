@@ -1,11 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { formatter } from '../../lib/utils'
+import { formatter, formatValue } from '../../lib/utils'
 import './styles.css'
 
 export class SummaryCard extends React.Component {
-  formatValue = (value) => String(value).replace(".",",")
-
   render () {
     const { installmentAmount, amount, feeRate } = this.props
 
@@ -15,7 +13,7 @@ export class SummaryCard extends React.Component {
           <h4>Valor da Parcela</h4>
           <div className="quota">
             <strong>R$ </strong>
-            <span>{this.formatValue(installmentAmount)}</span>
+            <span>{formatValue(installmentAmount)}</span>
           </div>
         </div>
         <div className="amount_container">
@@ -24,7 +22,7 @@ export class SummaryCard extends React.Component {
         </div>
         <div className="tax__container">
           <h4>Taxa de juros (mês)</h4>
-          <p>{this.formatValue(feeRate)} %</p>
+          <p>{formatValue(feeRate)} %</p>
         </div>
         <button className="button">
           Solicitar

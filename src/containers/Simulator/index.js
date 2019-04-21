@@ -91,7 +91,7 @@ export class Simulator extends React.Component {
                   label="Valor da Garantia"
                   value={guaranteeValue}
                   min={1.25*minLoan}
-                  max={2000000}
+                  max={10000000}
                   onChange={this.changeState}
                 />
               </div>

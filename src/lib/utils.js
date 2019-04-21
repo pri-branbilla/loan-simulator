@@ -27,3 +27,5 @@ export const formatter = (number) => new Intl.NumberFormat('pt-BR', {
   currency: 'BRL',
   minimunFractionDigits: 2
 }).format(number)
+
+export const formatValue = (value) => String(value).replace(".",",")
