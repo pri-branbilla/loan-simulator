@@ -46,6 +46,7 @@ export class SelectorInput extends React.Component {
     const { inputId, label, min, max } = this.props
     return (
       <div className="field-group">
+        <p className="inline-label">R$</p>
         <InputWrapper
           inputId={inputId}
           label={label}
