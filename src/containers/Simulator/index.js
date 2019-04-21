@@ -1,7 +1,7 @@
 import React from 'react'
 import { Select, SelectorInput, SummaryCard } from '../../components'
 import { guaranteeOptions, selectGuarantee } from './constants'
-import { totalAmount, installmentValue, monthlyFee, realLoanValue } from '../../lib/utils'
+import { totalAmount, installmentValue, monthlyFee, realLoanValue, maxLoan } from '../../lib/utils'
 import './styles.css'
 
 export class Simulator extends React.Component {
@@ -14,7 +14,7 @@ export class Simulator extends React.Component {
       loanValue: 3000,
       maxLoan: guaranteeOptions.vehicle.maxLoan,
       selectedGuarantee: guaranteeOptions.vehicle,
-      finalAmount: totalAmount(3000, 24, 14400),
+      finalAmount: totalAmount(3000, 24),
     }
   }
 
@@ -23,12 +23,13 @@ export class Simulator extends React.Component {
       [name]: value,
     },
     () => {
+      if (name === 'guaranteeValue'){
         this.setMaxLoan()
-        return this.setState({
-          finalAmount: totalAmount(
-            this.state.loanValue,
-            this.state.selectedInstallments,
-            this.state.guaranteeValue
+      }
+      return this.setState({
+        finalAmount: totalAmount(
+          this.state.loanValue,
+          this.state.selectedInstallments,
         )
       })
     })
@@ -36,7 +37,7 @@ export class Simulator extends React.Component {
 
   setMaxLoan = () => {
     const guaranteeMaxLoan = this.state.selectedGuarantee.maxLoan
-    const valueMaxLoan = 0.8 * this.state.guaranteeValue
+    const valueMaxLoan = maxLoan(this.state.guaranteeValue)
     const actualLoanValue = this.state.loanValue > valueMaxLoan ?
       valueMaxLoan :
       this.state.loanValue
@@ -58,7 +59,6 @@ export class Simulator extends React.Component {
       finalAmount: totalAmount(
         guaranteeOptions[value].minLoan,
         guaranteeOptions[value].installments[0].value,
-        this.state.guaranteeValue
       )
     }, () => this.setMaxLoan())
   }
@@ -75,7 +75,7 @@ export class Simulator extends React.Component {
       <main className="main">
         <h1 className="main__title">Realize uma simulação de crédito utilizando seu bem como garantia.</h1>
         <section className="section__container">
-          <form className="form" name="form" method="POST" onSubmit={(e) => this.sendData(e)}>
+          <form className="form" name="form" method="POST" onSubmit={this.sendData}>
             <div className="form__fields">
               <div className="field-group">
                 <Select
