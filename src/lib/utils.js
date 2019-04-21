@@ -1,5 +1,5 @@
-const IOF = 6.38
-const fee = 2.35
+const IOF = 6.38 /100
+const INTEREST_RATE = 2.34 / 100
 
 const maxLoan = (guaranteeValue) => {
   return guaranteeValue * 0.8
@@ -16,7 +16,7 @@ export const totalAmount = (
   loanValue,
   installments,
   guaranteeValue
-  ) => ((IOF / 100) + (fee / 100) + (installments / 1000) + 1) * realLoanValue(loanValue, guaranteeValue)
+  ) => (IOF + INTEREST_RATE + (installments / 1000) + 1) * realLoanValue(loanValue, guaranteeValue)
 
 export const installmentValue = (amount, installments) => Math.floor(100*amount/installments) / 100
 

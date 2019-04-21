@@ -23,21 +23,21 @@ export class SelectorInput extends React.Component {
 
   actualValue = (max, min, name, value) => {
     let actualValue = value
-    if (value > min) {
+    if (value < 0) {
+      actualValue = value * (-1)
+    }
+    if (value >= min) {
       if (value > max) {
         actualValue = max
       }
-      if (value < 0) {
-        actualValue = value * (-1)
-      }
       return this.props.onChange(name, actualValue)
     }
-    return this.props.onChange(name, min)
+    return this.props.onChange(name, actualValue)
   }
 
-  minValue = (name, value) => {
+  minValue = (min, name, value) => {
     if (value < this.props.min) {
-      return this.props.onChange(name, this.props.min)
+      return this.props.onChange(name, min)
     }
     return this.props.onChange(name, value)
   }
@@ -56,7 +56,7 @@ export class SelectorInput extends React.Component {
             required
             min={min}
             max={max}
-            onBlur={(e) => this.minValue(e.target.id, e.target.value)}
+            onBlur={(e) => this.minValue(min, e.target.id, e.target.value)}
             onChange={(e) => this.actualValue(max, min, e.target.id, e.target.value)}
             name={inputId}
             id={inputId}

@@ -2,7 +2,7 @@
 @import "../../colors.css";
 
 #root {
-  height: 100%;
+  height: calc(100% - 77px);
 }
 
 * {
@@ -18,10 +18,6 @@ html, body {
 
 body {
   background-color: var(--concrete);
-}
-
-.container {
-  height: 100%;
 }
 
 .main {
