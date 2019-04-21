@@ -109,7 +109,7 @@ body {
   background-repeat: no-repeat;
 }
 
-.field select, .field input[type="number"] {
+.field select, .field input[type="text"] {
   color: var(--emperor);
   border: 1px solid var(--nobel);
   background-color: var(--alabaster);
