@@ -171,23 +171,25 @@ export function handleBlurWarrantyTextInput (textInputWarranty) {
   })
 }
 
-export function handleBlurLoanTextInput (textInputLoan) {
-  textInputLoan.addEventListener('input', function (event) {
-    textInputLoan.value = 'R$ ' + (event.target.value).split('R$ ')[1]
+export function handleBlurLoanTextInput (
+  textInputLoanElement,
+  rangeLoanElement
+) {
+  textInputLoanElement.addEventListener('input', function (event) {
+    textInputLoanElement.value = 'R$ ' + (event.target.value).split('R$ ')[1]
     if ((event.target.value).split('R$ ')[1] === 'undefined') {
-      textInputLoan.value = 'R$ '
+      textInputLoanElement.value = 'R$ '
     }
   })
-  textInputLoan.addEventListener('blur', function (event) {
+  textInputLoanElement.addEventListener('blur', function (event) {
     var value = event.target.value
-    const rangeLoan = document.getElementById('valor-emprestimo-range')
     value = inputBlur(
-      textInputLoan,
-      rangeLoan,
+      textInputLoanElement,
+      rangeLoanElement,
       value
     )
     if (isNaN(value)) {
-      textInputLoan.value = utils.currencyFormatter(rangeLoan.getAttribute('min'))
+      textInputLoanElement.value = utils.currencyFormatter(rangeLoanElement.getAttribute('min'))
     }
     updateCard()
   })
@@ -229,7 +231,8 @@ export default class CreditasChallenge {
       document.getElementById('valor-garantia')
     )
     handleBlurLoanTextInput(
-      document.getElementById('valor-emprestimo')
+      document.getElementById('valor-emprestimo'),
+      document.getElementById('valor-emprestimo-range')
     )
     handleChangeWarrantyType(
       document.getElementById('garantia')
