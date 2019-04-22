@@ -31,3 +31,13 @@ export const verifyValue = (loanValue, rangeElement) => {
   }
   return realValue
 }
+
+export const inputBlur = (inputElement, rangeElement, inputValue) => {
+  var realValue = verifyValue(
+    inputValue,
+    rangeElement
+  )
+  rangeElement.value = realValue
+  inputElement.value = utils.currencyFormatter(realValue)
+  return realValue
+}

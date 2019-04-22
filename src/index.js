@@ -27,16 +27,6 @@ const resetPage = (selectElement, selectedOption) => {
   updateCard()
 }
 
-const inputBlur = (inputElement, rangeElement, inputValue) => {
-  var realValue = helper.verifyValue(
-    inputValue,
-    rangeElement
-  )
-  rangeElement.value = realValue
-  inputElement.value = utils.currencyFormatter(realValue)
-  return realValue
-}
-
 export const getFormValues = formElement =>
   Object.values(formElement.elements)
     .filter(element => ['SELECT', 'INPUT'].includes(element.nodeName))
@@ -129,7 +119,7 @@ export function handleBlurWarrantyTextInput (
   })
   textInputWarrantyElement.addEventListener('blur', function (event) {
     var value = event.target.value
-    value = inputBlur(
+    value = helper.inputBlur(
       textInputWarrantyElement,
       rangeWarrantyElement,
       value
@@ -158,7 +148,7 @@ export function handleBlurLoanTextInput (
   })
   textInputLoanElement.addEventListener('blur', function (event) {
     var value = event.target.value
-    value = inputBlur(
+    value = helper.inputBlur(
       textInputLoanElement,
       rangeLoanElement,
       value
