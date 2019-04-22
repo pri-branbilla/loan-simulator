@@ -20,3 +20,14 @@ export const changeInputElement = (inputElement, rangeElement, minValue, maxValu
   updateMaxValue(maxValue, rangeElement)
   inputElement.value = utils.currencyFormatter(rangeElement.value)
 }
+
+export const verifyValue = (loanValue, rangeElement) => {
+  var realValue = utils.unformatter(loanValue)
+  if (realValue < rangeElement.getAttribute('min')) {
+    return rangeElement.getAttribute('min')
+  }
+  if (realValue > rangeElement.getAttribute('max')) {
+    return rangeElement.getAttribute('max')
+  }
+  return realValue
+}

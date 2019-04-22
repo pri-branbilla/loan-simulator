@@ -12,17 +12,6 @@ const updateCard = () => {
   )
 }
 
-const verifyValue = (loanValue, rangeElement) => {
-  var realValue = utils.unformatter(loanValue)
-  if (realValue < rangeElement.getAttribute('min')) {
-    return rangeElement.getAttribute('min')
-  }
-  if (realValue > rangeElement.getAttribute('max')) {
-    return rangeElement.getAttribute('max')
-  }
-  return realValue
-}
-
 export const setMaxLoan = (value, maxLoan) => {
   if (utils.maxLoan(value) > maxLoan) {
     return maxLoan
@@ -46,7 +35,7 @@ const resetPage = (selectElement, selectedOption) => {
 }
 
 const inputBlur = (inputElement, rangeElement, inputValue) => {
-  var realValue = verifyValue(
+  var realValue = helper.verifyValue(
     inputValue,
     rangeElement
   )
