@@ -12,13 +12,6 @@ const updateCard = () => {
   )
 }
 
-export const setMaxLoan = (value, maxLoan) => {
-  if (utils.maxLoan(value) > maxLoan) {
-    return maxLoan
-  }
-  return utils.maxLoan(value)
-}
-
 const changeOptions = (selectElement, selectedOption) => {
   const loanRange = document.getElementById('valor-emprestimo-range')
   const loanInput = document.getElementById('valor-emprestimo')
@@ -101,7 +94,7 @@ export function handleChangeRangeWarranty (
   vehicleWarrantyElement
 ) {
   warrantyRangeElement.addEventListener('change', function (event) {
-    const maxValue = setMaxLoan(event.target.value, utils.selectedWarranty(document.getElementById('garantia').value).maxLoan)
+    const maxValue = utils.setMaxLoan(event.target.value, utils.selectedWarranty(document.getElementById('garantia').value).maxLoan)
     helper.updateMaxValue(maxValue, document.getElementById('valor-emprestimo-range'))
     document.getElementById('valor-emprestimo').value = utils.currencyFormatter(
       document.getElementById('valor-emprestimo-range').value
@@ -144,7 +137,7 @@ export function handleBlurWarrantyTextInput (
     if (isNaN(value)) {
       textInputWarrantyElement.value = utils.currencyFormatter(rangeWarrantyElement.getAttribute('min'))
     }
-    const maxValue = setMaxLoan(value, utils.selectedWarranty(warrantyTypeElement.value).maxLoan)
+    const maxValue = utils.setMaxLoan(value, utils.selectedWarranty(warrantyTypeElement.value).maxLoan)
     helper.updateMaxValue(maxValue, rangeLoanElement)
     textInputLoanElement.value = utils.currencyFormatter(
       rangeLoanElement.value

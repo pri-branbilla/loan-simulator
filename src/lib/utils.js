@@ -11,6 +11,13 @@ export const warranyOptions = {
   }
 }
 
+export const setMaxLoan = (value, maxValue) => {
+  if (maxLoan(value) > maxValue) {
+    return maxValue
+  }
+  return maxLoan(value)
+}
+
 export const currencyFormatter = (number) => new Intl.NumberFormat('pt-BR', {
   style: 'currency',
   currency: 'BRL',
