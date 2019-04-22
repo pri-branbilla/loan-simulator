@@ -2,7 +2,9 @@ import {
   changeInputElement,
   getFormValues,
   toStringFormValues,
-  updateMaxValue
+  updateMaxValue,
+  inputBlur,
+  changeInstallmentValue
 } from '../src/lib/eventsHelper'
 
 function initializeAppMock () {
@@ -128,6 +130,41 @@ Total R$100,513.60`
       const range = document.getElementById('valor-emprestimo-range')
       updateMaxValue(6000000, range)
       expect(range.getAttribute('max')).toBe('6000000')
+    })
+  })
+
+  describe('Method: changeInstallmentValue', () => {
+    it('should update the installment value with the new one', () => {
+      const total = document.querySelector('.amount_container p')
+      const quota = document.querySelector('.quota span')
+      const installments = document.getElementById('parcelas')
+      const loanAmount = document.getElementById('valor-emprestimo')
+      const tax = document.querySelector('.tax__container p')
+      changeInstallmentValue(total, quota, installments, loanAmount, tax)
+      expect(quota.innerHTML).toBe('4188,06')
+      expect(tax.innerHTML).toBe('1,111 %')
+      expect(total.innerHTML).toBe('R$100,513.60')
+    })
+  })
+
+  describe('Method: inputBlur', () => {
+    it('should update input and range value after blur event', () => {
+      const range = document.getElementById('valor-emprestimo-range')
+      const input = document.getElementById('valor-emprestimo')
+      const value = inputBlur(input, range, 'R$ 50.000,00')
+      expect(value).toBe(50000)
+    })
+    it('should set the max value after blur event', () => {
+      const range = document.getElementById('valor-emprestimo-range')
+      const input = document.getElementById('valor-emprestimo')
+      const value = inputBlur(input, range, 'R$ 400.000,00')
+      expect(value).toBe('100000')
+    })
+    it('should set the min value after blur event', () => {
+      const range = document.getElementById('valor-emprestimo-range')
+      const input = document.getElementById('valor-emprestimo')
+      const value = inputBlur(input, range, 'R$ 1.000,00')
+      expect(value).toBe('3000')
     })
   })
 })
