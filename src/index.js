@@ -131,7 +131,7 @@ export function handleChangeRangeWarranty (
   vehicleWarrantyElement
 ) {
   warrantyRangeElement.addEventListener('change', function (event) {
-    const maxValue = setMaxLoan(event.target.value, utils.warranyOptions[document.getElementById('garantia').value].maxLoan)
+    const maxValue = setMaxLoan(event.target.value, utils.selectedWarranty(document.getElementById('garantia').value).maxLoan)
     updateMaxValue(maxValue, document.getElementById('valor-emprestimo-range'))
     document.getElementById('valor-emprestimo').value = utils.currencyFormatter(
       document.getElementById('valor-emprestimo-range').value
@@ -146,7 +146,7 @@ export function handleChangeWarrantyType (
   warrantyElement
 ) {
   warrantyElement.addEventListener('change', function (event) {
-    resetPage(document.getElementById('parcelas'), utils.warranyOptions[event.target.value])
+    resetPage(document.getElementById('parcelas'), utils.selectedWarranty(event.target.value))
   })
 }
 
@@ -168,7 +168,7 @@ export function handleBlurWarrantyTextInput (textInputWarranty) {
     if (isNaN(value)) {
       textInputWarranty.value = utils.currencyFormatter(rangeWarranty.getAttribute('min'))
     }
-    const maxValue = setMaxLoan(value, utils.warranyOptions[document.getElementById('garantia').value].maxLoan)
+    const maxValue = setMaxLoan(value, utils.selectedWarranty(document.getElementById('garantia').value).maxLoan)
     updateMaxValue(maxValue, document.getElementById('valor-emprestimo-range'))
     document.getElementById('valor-emprestimo').value = utils.currencyFormatter(
       document.getElementById('valor-emprestimo-range').value
@@ -213,7 +213,7 @@ export function handleChangeLoanAmount (
 export function handleLoad () {
   resetPage(
     document.getElementById('parcelas'),
-    utils.warranyOptions[document.getElementById('garantia').value]
+    utils.selectedWarranty(document.getElementById('garantia').value)
   )
 }
 
