@@ -23,12 +23,13 @@
 --> */
 
 import CreditasChallenge, {
-  checkFormValidity,
   getFormValues,
   toStringFormValues,
   Send,
   Submit
 } from '../src/index'
+
+import { checkFormValidity } from '../src/lib/utils.js'
 
 function initializeAppMock () {
   document.body.innerHTML = `

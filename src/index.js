@@ -77,7 +77,6 @@ const inputBlur = (inputElement, rangeElement, inputValue) => {
     inputValue,
     rangeElement
   )
-  console.log(realValue)
   rangeElement.value = realValue
   inputElement.value = utils.currencyFormatter(realValue)
   return realValue
@@ -99,7 +98,7 @@ export function Submit (formElement) {
     if (utils.checkFormValidity(formElement)) {
       Send(utils.getFormValues(formElement))
         .then(result => confirm(result, 'Your form submited success'))
-        .catch(error => Alert('Your form submited error', error))
+        .catch(error => alert('Your form submited error', error))
     }
   })
 }
@@ -143,10 +142,14 @@ export function handleChangeWarrantyType (
 export function handleBlurTextInput () {
   const textInputGuarantee = document.getElementById('valor-garantia')
   textInputGuarantee.addEventListener('blur', function (event) {
-    const value = inputBlur(
+    var value = event.target.value
+    if (typeof (event.target.value) !== 'number') {
+      value = utils.currencyFormatter(document.getElementById('valor-garantia-range').getAttribute('min'))
+    }
+    value = inputBlur(
       textInputGuarantee,
       document.getElementById('valor-garantia-range'),
-      event.target.value
+      value
     )
     const maxValue = setMaxLoan(value, utils.warranyOptions[document.getElementById('garantia').value].maxLoan)
     updateMaxValue(maxValue, document.getElementById('valor-emprestimo-range'))
@@ -157,10 +160,14 @@ export function handleBlurTextInput () {
   })
   const textInputLoan = document.getElementById('valor-emprestimo')
   textInputLoan.addEventListener('blur', function (event) {
+    var value = event.target.value
+    if (typeof (event.target.value) !== 'number') {
+      value = utils.currencyFormatter(document.getElementById('valor-emprestimo-range').getAttribute('min'))
+    }
     inputBlur(
       textInputLoan,
       document.getElementById('valor-emprestimo-range'),
-      event.target.value
+      value
     )
     updateCard()
   })

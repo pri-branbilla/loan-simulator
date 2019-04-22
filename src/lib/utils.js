@@ -11,6 +11,16 @@ export const warranyOptions = {
   }
 }
 
+export const forceNumeric = (e) => {
+  var key = e.which || e.keyCode
+
+  if (key > 31 && (key < 48 || key > 57)) {
+    return false
+  }
+
+  return true
+}
+
 export const currencyFormatter = (number) => new Intl.NumberFormat('pt-BR', {
   style: 'currency',
   currency: 'BRL',
