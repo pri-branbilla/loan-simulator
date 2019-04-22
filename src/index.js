@@ -12,19 +12,6 @@ const updateCard = () => {
   )
 }
 
-export const updateMaxValue = (maxValue, rangeElement) => {
-  rangeElement.setAttribute('max', maxValue)
-  rangeElement.parentNode.children[1].children[1].innerHTML = utils.currencyFormatter(maxValue)
-}
-
-export const changeInputElement = (inputElement, rangeElement, minValue, maxValue) => {
-  rangeElement.setAttribute('min', minValue)
-  rangeElement.value = (maxValue / 2) * 1.25
-  rangeElement.parentNode.children[1].children[0].innerHTML = utils.currencyFormatter(minValue)
-  updateMaxValue(maxValue, rangeElement)
-  inputElement.value = utils.currencyFormatter(rangeElement.value)
-}
-
 const verifyValue = (loanValue, rangeElement) => {
   var realValue = utils.unformatter(loanValue)
   if (realValue < rangeElement.getAttribute('min')) {
@@ -49,8 +36,8 @@ const changeOptions = (selectElement, selectedOption) => {
   const warrantyRange = document.getElementById('valor-garantia-range')
   const warrantyInput = document.getElementById('valor-garantia')
   utils.renderOptions(selectElement, selectedOption.installments)
-  changeInputElement(warrantyInput, warrantyRange, 1.25 * selectedOption.minLoan, 9000000)
-  changeInputElement(loanInput, loanRange, selectedOption.minLoan, selectedOption.maxLoan)
+  helper.changeInputElement(warrantyInput, warrantyRange, 1.25 * selectedOption.minLoan, 9000000)
+  helper.changeInputElement(loanInput, loanRange, selectedOption.minLoan, selectedOption.maxLoan)
 }
 
 const resetPage = (selectElement, selectedOption) => {
@@ -126,7 +113,7 @@ export function handleChangeRangeWarranty (
 ) {
   warrantyRangeElement.addEventListener('change', function (event) {
     const maxValue = setMaxLoan(event.target.value, utils.selectedWarranty(document.getElementById('garantia').value).maxLoan)
-    updateMaxValue(maxValue, document.getElementById('valor-emprestimo-range'))
+    helper.updateMaxValue(maxValue, document.getElementById('valor-emprestimo-range'))
     document.getElementById('valor-emprestimo').value = utils.currencyFormatter(
       document.getElementById('valor-emprestimo-range').value
     )
@@ -169,7 +156,7 @@ export function handleBlurWarrantyTextInput (
       textInputWarrantyElement.value = utils.currencyFormatter(rangeWarrantyElement.getAttribute('min'))
     }
     const maxValue = setMaxLoan(value, utils.selectedWarranty(warrantyTypeElement.value).maxLoan)
-    updateMaxValue(maxValue, rangeLoanElement)
+    helper.updateMaxValue(maxValue, rangeLoanElement)
     textInputLoanElement.value = utils.currencyFormatter(
       rangeLoanElement.value
     )

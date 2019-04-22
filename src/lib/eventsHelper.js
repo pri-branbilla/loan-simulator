@@ -7,3 +7,16 @@ export const changeInstallmentValue = (totalAmountElement, quotaElement, install
   quotaElement.innerHTML = utils.formatValue(installmentValue)
   totalAmountElement.innerHTML = utils.currencyFormatter(finalValue)
 }
+
+export const updateMaxValue = (maxValue, rangeElement) => {
+  rangeElement.setAttribute('max', maxValue)
+  rangeElement.parentNode.children[1].children[1].innerHTML = utils.currencyFormatter(maxValue)
+}
+
+export const changeInputElement = (inputElement, rangeElement, minValue, maxValue) => {
+  rangeElement.setAttribute('min', minValue)
+  rangeElement.value = (maxValue / 2) * 1.25
+  rangeElement.parentNode.children[1].children[0].innerHTML = utils.currencyFormatter(minValue)
+  updateMaxValue(maxValue, rangeElement)
+  inputElement.value = utils.currencyFormatter(rangeElement.value)
+}
