@@ -13,12 +13,12 @@ const changeTotalAmountValue = (totalAmountElement, installmentsElement, loanAmo
   totalAmountElement.innerHTML = utils.currencyFormatter(finalValue)
 }
 
-const updateMaxValue = (maxValue, rangeElement) => {
+export const updateMaxValue = (maxValue, rangeElement) => {
   rangeElement.setAttribute('max', maxValue)
   rangeElement.parentNode.children[1].children[1].innerHTML = utils.currencyFormatter(maxValue)
 }
 
-const changeInputElement = (inputElement, rangeElement, minValue, maxValue) => {
+export const changeInputElement = (inputElement, rangeElement, minValue, maxValue) => {
   rangeElement.setAttribute('min', minValue)
   rangeElement.value = (maxValue / 2) * 1.25
   rangeElement.parentNode.children[1].children[0].innerHTML = utils.currencyFormatter(minValue)
@@ -37,7 +37,7 @@ const verifyValue = (loanValue, rangeElement) => {
   return realValue
 }
 
-const setMaxLoan = (value, maxLoan) => {
+export const setMaxLoan = (value, maxLoan) => {
   if (utils.maxLoan(value) > maxLoan) {
     return maxLoan
   }
@@ -82,10 +82,29 @@ const inputBlur = (inputElement, rangeElement, inputValue) => {
   return realValue
 }
 
+export const getFormValues = formElement =>
+  Object.values(formElement.elements)
+    .filter(element => ['SELECT', 'INPUT'].includes(element.nodeName))
+    .map(element => ({
+      field: element.name,
+      value: element.value
+    }))
+
+export const toStringFormValues = values => {
+  const match = matchString => value => value.field === matchString
+  const finalValue = utils.calcAmount(values.find(match('parcelas')), values.find(match('valor-emprestimo')))
+
+  return `Confirmação\n${values
+    .map(value => `Campo: ${value.field}, Valor: ${value.value}`)
+    .join('\n')}`.concat(
+    `\nTotal ${utils.currencyFormatter(finalValue)}`
+  )
+}
+
 export function Send (values) {
   return new Promise((resolve, reject) => {
     try {
-      resolve(utils.toStringFormValues(values))
+      resolve(toStringFormValues(values))
     } catch (error) {
       reject(error)
     }
@@ -96,7 +115,7 @@ export function Submit (formElement) {
   formElement.addEventListener('submit', function (event) {
     event.preventDefault()
     if (utils.checkFormValidity(formElement)) {
-      Send(utils.getFormValues(formElement))
+      Send(getFormValues(formElement))
         .then(result => confirm(result, 'Your form submited success'))
         .catch(error => alert('Your form submited error', error))
     }

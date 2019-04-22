@@ -11,16 +11,6 @@ export const warranyOptions = {
   }
 }
 
-export const forceNumeric = (e) => {
-  var key = e.which || e.keyCode
-
-  if (key > 31 && (key < 48 || key > 57)) {
-    return false
-  }
-
-  return true
-}
-
 export const currencyFormatter = (number) => new Intl.NumberFormat('pt-BR', {
   style: 'currency',
   currency: 'BRL',
@@ -36,11 +26,8 @@ export const formatValue = (value) => {
 
 export const unformatter = (value) => {
   let number = value
-  console.log(number)
   number = number.replace(/\./g, '')
-  console.log(number)
   number = Number((number.split('R$')[1]).replace(',', '.'))
-  console.log(number)
   return number
 }
 
@@ -60,27 +47,6 @@ export const maxLoan = (value) => {
   return value * 0.8
 }
 
-export const checkFormValidity = formElement => formElement.checkValidity()
-
-export const getFormValues = formElement =>
-  Object.values(formElement.elements)
-    .filter(element => ['SELECT', 'INPUT'].includes(element.nodeName))
-    .map(element => ({
-      field: element.name,
-      value: element.value
-    }))
-
-export const toStringFormValues = values => {
-  const match = matchString => value => value.field === matchString
-  const finalValue = calcAmount(values.find(match('parcelas')), values.find(match('valor-emprestimo')))
-
-  return `Confirmação\n${values
-    .map(value => `Campo: ${value.field}, Valor: ${value.value}`)
-    .join('\n')}`.concat(
-    `\nTotal ${currencyFormatter(finalValue)}`
-  )
-}
-
 export const selectedWarranty = (value) => {
   return warranyOptions[value]
 }
@@ -91,3 +57,5 @@ export const renderOptions = (selectElement, optionsArray) => {
     selectElement.options[index] = new Option(optionsArray[index], optionsArray[index])
   }
 }
+
+export const checkFormValidity = formElement => formElement.checkValidity()
