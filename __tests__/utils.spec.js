@@ -31,8 +31,9 @@ import {
   maxLoan,
   renderOptions,
   selectedWarranty,
-  checkFormValidity
-} from '../src/lib/utils.js'
+  checkFormValidity,
+  setMaxLoan
+} from '../src/lib/utils'
 
 function initializeAppMock () {
   document.body.innerHTML = `
@@ -85,6 +86,15 @@ describe('Creditas Challenge', () => {
     it('should return a formatted value to BRL', () => {
       const value = 12345.45
       expect(currencyFormatter(value)).toBe('R$12,345.45')
+    })
+  })
+
+  describe('Method: setMaxLoan', () => {
+    it('should return the smallest number', () => {
+      expect(setMaxLoan(120, 80)).toBe(80)
+    })
+    it('should return the greatest number', () => {
+      expect(setMaxLoan(90, 80)).toBe(72)
     })
   })
 

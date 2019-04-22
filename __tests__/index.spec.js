@@ -23,14 +23,13 @@
 --> */
 
 import {
-  setMaxLoan,
-  changeInputElement,
-  getFormValues,
-  toStringFormValues,
-  updateMaxValue,
   Send,
   Submit
 } from '../src/index'
+
+import {
+  getFormValues
+} from '../src/lib/eventsHelper'
 
 function initializeAppMock () {
   document.body.innerHTML = `
@@ -133,25 +132,6 @@ Total R$100,513.60`
     clean()
   })
 
-  describe('Method: setMaxLoan', () => {
-    it('should return the smallest number', () => {
-      expect(setMaxLoan(120, 80)).toBe(80)
-    })
-    it('should return the greatest number', () => {
-      expect(setMaxLoan(90, 80)).toBe(72)
-    })
-  })
-
-  describe('Method: changeInputElement', () => {
-    it('should change the text and range inputs', () => {
-      const input = document.getElementById('valor-garantia')
-      const range = document.getElementById('valor-garantia-range')
-      changeInputElement(input, range, 30000, 4500000)
-      expect(input.value).toBe('R$2,812,500.00')
-      expect(range.value).toBe('2812500')
-    })
-  })
-
   describe('Method: getFormValues', () => {
     it('should get all the form values', () => {
       const form = document.querySelector('.form')
@@ -163,22 +143,6 @@ Total R$100,513.60`
         { 'field': 'valor-emprestimo', 'value': 'R$ 90.455,00' },
         { 'field': 'valor-emprestimo-range', 'value': '90455' }
       ])
-    })
-  })
-
-  describe('Method: toStringFormValues', () => {
-    it('should return a message with form values', () => {
-      const form = document.querySelector('.form')
-      document.getElementById('parcelas').value = 24
-      expect(toStringFormValues(getFormValues(form))).toBe(confirm)
-    })
-  })
-
-  describe('Method: updateMaxValue', () => {
-    it('should update max value of a range', () => {
-      const range = document.getElementById('valor-garantia-range')
-      updateMaxValue(6000000, range)
-      expect(range.getAttribute('max')).toBe('6000000')
     })
   })
 

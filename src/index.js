@@ -40,7 +40,7 @@ export function Send (values) {
 export function Submit (formElement) {
   formElement.addEventListener('submit', function (event) {
     event.preventDefault()
-    if (helper.checkFormValidity(formElement)) {
+    if (utils.checkFormValidity(formElement)) {
       Send(helper.getFormValues(formElement))
         .then(result => confirm(result, 'Your form submited success'))
         .catch(error => alert('Your form submited error', error))

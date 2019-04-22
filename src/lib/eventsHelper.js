@@ -60,5 +60,3 @@ export const toStringFormValues = values => {
     `\nTotal ${utils.currencyFormatter(finalValue)}`
   )
 }
-
-export const checkFormValidity = formElement => formElement.checkValidity()
