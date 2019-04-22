@@ -27,29 +27,10 @@ const resetPage = (selectElement, selectedOption) => {
   updateCard()
 }
 
-export const getFormValues = formElement =>
-  Object.values(formElement.elements)
-    .filter(element => ['SELECT', 'INPUT'].includes(element.nodeName))
-    .map(element => ({
-      field: element.name,
-      value: element.value
-    }))
-
-export const toStringFormValues = values => {
-  const match = matchString => value => value.field === matchString
-  const finalValue = utils.calcAmount(values.find(match('parcelas')), values.find(match('valor-emprestimo')))
-
-  return `Confirmação\n${values
-    .map(value => `Campo: ${value.field}, Valor: ${value.value}`)
-    .join('\n')}`.concat(
-    `\nTotal ${utils.currencyFormatter(finalValue)}`
-  )
-}
-
 export function Send (values) {
   return new Promise((resolve, reject) => {
     try {
-      resolve(toStringFormValues(values))
+      resolve(helper.toStringFormValues(values))
     } catch (error) {
       reject(error)
     }
@@ -59,8 +40,8 @@ export function Send (values) {
 export function Submit (formElement) {
   formElement.addEventListener('submit', function (event) {
     event.preventDefault()
-    if (utils.checkFormValidity(formElement)) {
-      Send(getFormValues(formElement))
+    if (helper.checkFormValidity(formElement)) {
+      Send(helper.getFormValues(formElement))
         .then(result => confirm(result, 'Your form submited success'))
         .catch(error => alert('Your form submited error', error))
     }

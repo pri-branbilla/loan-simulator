@@ -41,3 +41,24 @@ export const inputBlur = (inputElement, rangeElement, inputValue) => {
   inputElement.value = utils.currencyFormatter(realValue)
   return realValue
 }
+
+export const getFormValues = formElement =>
+  Object.values(formElement.elements)
+    .filter(element => ['SELECT', 'INPUT'].includes(element.nodeName))
+    .map(element => ({
+      field: element.name,
+      value: element.value
+    }))
+
+export const toStringFormValues = values => {
+  const match = matchString => value => value.field === matchString
+  const finalValue = utils.calcAmount(values.find(match('parcelas')), values.find(match('valor-emprestimo')))
+
+  return `Confirmação\n${values
+    .map(value => `Campo: ${value.field}, Valor: ${value.value}`)
+    .join('\n')}`.concat(
+    `\nTotal ${utils.currencyFormatter(finalValue)}`
+  )
+}
+
+export const checkFormValidity = formElement => formElement.checkValidity()

@@ -64,5 +64,3 @@ export const renderOptions = (selectElement, optionsArray) => {
     selectElement.options[index] = new Option(optionsArray[index], optionsArray[index])
   }
 }
-
-export const checkFormValidity = formElement => formElement.checkValidity()
