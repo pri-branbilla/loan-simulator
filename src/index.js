@@ -151,17 +151,23 @@ export function handleChangeWarrantyType (
 }
 
 export function handleBlurWarrantyTextInput (textInputWarranty) {
+  textInputWarranty.addEventListener('input', function (event) {
+    textInputWarranty.value = 'R$ ' + (event.target.value).split('R$ ')[1]
+    if ((event.target.value).split('R$ ')[1] === 'undefined') {
+      textInputWarranty.value = 'R$ '
+    }
+  })
   textInputWarranty.addEventListener('blur', function (event) {
     var value = event.target.value
     const rangeWarranty = document.getElementById('valor-garantia-range')
-    if (typeof (event.target.value) !== 'number') {
-      value = utils.currencyFormatter(rangeWarranty.getAttribute('min'))
-    }
     value = inputBlur(
       textInputWarranty,
       rangeWarranty,
       value
     )
+    if (isNaN(value)) {
+      textInputWarranty.value = utils.currencyFormatter(rangeWarranty.getAttribute('min'))
+    }
     const maxValue = setMaxLoan(value, utils.warranyOptions[document.getElementById('garantia').value].maxLoan)
     updateMaxValue(maxValue, document.getElementById('valor-emprestimo-range'))
     document.getElementById('valor-emprestimo').value = utils.currencyFormatter(
@@ -172,17 +178,23 @@ export function handleBlurWarrantyTextInput (textInputWarranty) {
 }
 
 export function handleBlurLoanTextInput (textInputLoan) {
+  textInputLoan.addEventListener('input', function (event) {
+    textInputLoan.value = 'R$ ' + (event.target.value).split('R$ ')[1]
+    if ((event.target.value).split('R$ ')[1] === 'undefined') {
+      textInputLoan.value = 'R$ '
+    }
+  })
   textInputLoan.addEventListener('blur', function (event) {
     var value = event.target.value
     const rangeLoan = document.getElementById('valor-emprestimo-range')
-    if (typeof (event.target.value) !== 'number') {
-      value = utils.currencyFormatter(rangeLoan.getAttribute('min'))
-    }
-    inputBlur(
+    value = inputBlur(
       textInputLoan,
       rangeLoan,
       value
     )
+    if (isNaN(value)) {
+      textInputLoan.value = utils.currencyFormatter(rangeLoan.getAttribute('min'))
+    }
     updateCard()
   })
 }
