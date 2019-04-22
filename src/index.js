@@ -20,7 +20,7 @@ const updateMaxValue = (maxValue, rangeElement) => {
 
 const changeInputElement = (inputElement, rangeElement, minValue, maxValue) => {
   rangeElement.setAttribute('min', minValue)
-  rangeElement.value = (maxValue + minValue) / 2
+  rangeElement.value = (maxValue / 2) * 1.25
   rangeElement.parentNode.children[1].children[0].innerHTML = utils.currencyFormatter(minValue)
   updateMaxValue(maxValue, rangeElement)
   inputElement.value = utils.currencyFormatter(rangeElement.value)
