@@ -2,14 +2,20 @@ import './static/styles.css'
 
 const utils = require('./lib/utils.js')
 
-const changeInstallmentValue = (quotaElement, installmentsElement, loanAmountElement) => {
-  const installmentValue = utils.calcAmount(installmentsElement, loanAmountElement) / installmentsElement.value
-  document.querySelector('.tax__container p').innerHTML = `${utils.replaceDot(utils.monthlyFee(installmentValue, utils.unformatter(loanAmountElement.value), installmentsElement.value))} %`
-  quotaElement.innerHTML = utils.formatValue(installmentValue)
+const updateCard = () => {
+  changeInstallmentValue(
+    document.querySelector('.amount_container p'),
+    document.querySelector('.quota span'),
+    document.getElementById('parcelas'),
+    document.getElementById('valor-emprestimo')
+  )
 }
 
-const changeTotalAmountValue = (totalAmountElement, installmentsElement, loanAmountElement) => {
+const changeInstallmentValue = (totalAmountElement, quotaElement, installmentsElement, loanAmountElement) => {
+  const installmentValue = utils.calcAmount(installmentsElement, loanAmountElement) / installmentsElement.value
   const finalValue = utils.calcAmount(installmentsElement, loanAmountElement)
+  document.querySelector('.tax__container p').innerHTML = `${utils.replaceDot(utils.monthlyFee(installmentValue, utils.unformatter(loanAmountElement.value), installmentsElement.value))} %`
+  quotaElement.innerHTML = utils.formatValue(installmentValue)
   totalAmountElement.innerHTML = utils.currencyFormatter(finalValue)
 }
 
@@ -52,19 +58,6 @@ const changeOptions = (selectElement, selectedOption) => {
   utils.renderOptions(selectElement, selectedOption.installments)
   changeInputElement(warrantyInput, warrantyRange, 1.25 * selectedOption.minLoan, 9000000)
   changeInputElement(loanInput, loanRange, selectedOption.minLoan, selectedOption.maxLoan)
-}
-
-const updateCard = () => {
-  changeInstallmentValue(
-    document.querySelector('.quota span'),
-    document.getElementById('parcelas'),
-    document.getElementById('valor-emprestimo')
-  )
-  changeTotalAmountValue(
-    document.querySelector('.amount_container p'),
-    document.getElementById('parcelas'),
-    document.getElementById('valor-emprestimo')
-  )
 }
 
 const resetPage = (selectElement, selectedOption) => {
@@ -129,8 +122,7 @@ export function handleChangeQuotaValue (
   loanAmountElement
 ) {
   installmentsElement.addEventListener('change', function (event) {
-    changeInstallmentValue(quotaElement, installmentsElement, loanAmountElement)
-    changeTotalAmountValue(totalAmountElement, installmentsElement, loanAmountElement)
+    changeInstallmentValue(totalAmountElement, quotaElement, installmentsElement, loanAmountElement)
   })
 }
 
@@ -158,16 +150,16 @@ export function handleChangeWarrantyType (
   })
 }
 
-export function handleBlurTextInput () {
-  const textInputGuarantee = document.getElementById('valor-garantia')
-  textInputGuarantee.addEventListener('blur', function (event) {
+export function handleBlurWarrantyTextInput (textInputWarranty) {
+  textInputWarranty.addEventListener('blur', function (event) {
     var value = event.target.value
+    const rangeWarranty = document.getElementById('valor-garantia-range')
     if (typeof (event.target.value) !== 'number') {
-      value = utils.currencyFormatter(document.getElementById('valor-garantia-range').getAttribute('min'))
+      value = utils.currencyFormatter(rangeWarranty.getAttribute('min'))
     }
     value = inputBlur(
-      textInputGuarantee,
-      document.getElementById('valor-garantia-range'),
+      textInputWarranty,
+      rangeWarranty,
       value
     )
     const maxValue = setMaxLoan(value, utils.warranyOptions[document.getElementById('garantia').value].maxLoan)
@@ -177,15 +169,18 @@ export function handleBlurTextInput () {
     )
     updateCard()
   })
-  const textInputLoan = document.getElementById('valor-emprestimo')
+}
+
+export function handleBlurLoanTextInput (textInputLoan) {
   textInputLoan.addEventListener('blur', function (event) {
     var value = event.target.value
+    const rangeLoan = document.getElementById('valor-emprestimo-range')
     if (typeof (event.target.value) !== 'number') {
-      value = utils.currencyFormatter(document.getElementById('valor-emprestimo-range').getAttribute('min'))
+      value = utils.currencyFormatter(rangeLoan.getAttribute('min'))
     }
     inputBlur(
       textInputLoan,
-      document.getElementById('valor-emprestimo-range'),
+      rangeLoan,
       value
     )
     updateCard()
@@ -218,7 +213,12 @@ export default class CreditasChallenge {
 
   static registerEvents () {
     Submit(document.querySelector('.form'))
-    handleBlurTextInput()
+    handleBlurWarrantyTextInput(
+      document.getElementById('valor-garantia')
+    )
+    handleBlurLoanTextInput(
+      document.getElementById('valor-emprestimo')
+    )
     handleChangeWarrantyType(
       document.getElementById('garantia')
     )

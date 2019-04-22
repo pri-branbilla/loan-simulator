@@ -79,5 +79,5 @@ typings/
 
 # FuseBox cache
 .fusebox/
-
+.DS_Store
 # End of https://www.gitignore.io/api/node
