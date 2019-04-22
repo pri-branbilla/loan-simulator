@@ -7,14 +7,15 @@ const updateCard = () => {
     document.querySelector('.amount_container p'),
     document.querySelector('.quota span'),
     document.getElementById('parcelas'),
-    document.getElementById('valor-emprestimo')
+    document.getElementById('valor-emprestimo'),
+    document.querySelector('.tax__container p')
   )
 }
 
-const changeInstallmentValue = (totalAmountElement, quotaElement, installmentsElement, loanAmountElement) => {
+const changeInstallmentValue = (totalAmountElement, quotaElement, installmentsElement, loanAmountElement, taxElement) => {
   const installmentValue = utils.calcAmount(installmentsElement, loanAmountElement) / installmentsElement.value
   const finalValue = utils.calcAmount(installmentsElement, loanAmountElement)
-  document.querySelector('.tax__container p').innerHTML = `${utils.replaceDot(utils.monthlyFee(installmentValue, utils.unformatter(loanAmountElement.value), installmentsElement.value))} %`
+  taxElement.innerHTML = `${utils.replaceDot(utils.monthlyFee(installmentValue, utils.unformatter(loanAmountElement.value), installmentsElement.value))} %`
   quotaElement.innerHTML = utils.formatValue(installmentValue)
   totalAmountElement.innerHTML = utils.currencyFormatter(finalValue)
 }
@@ -119,10 +120,11 @@ export function handleChangeQuotaValue (
   quotaElement,
   totalAmountElement,
   installmentsElement,
-  loanAmountElement
+  loanAmountElement,
+  taxElement
 ) {
   installmentsElement.addEventListener('change', function (event) {
-    changeInstallmentValue(totalAmountElement, quotaElement, installmentsElement, loanAmountElement)
+    changeInstallmentValue(totalAmountElement, quotaElement, installmentsElement, loanAmountElement, taxElement)
   })
 }
 
@@ -210,16 +212,22 @@ export function handleChangeLoanAmount (
   })
 }
 
-export function handleLoad () {
+export function handleLoad (
+  installmentsElement,
+  warrantyElement
+) {
   resetPage(
-    document.getElementById('parcelas'),
-    utils.selectedWarranty(document.getElementById('garantia').value)
+    installmentsElement,
+    utils.selectedWarranty(warrantyElement.value)
   )
 }
 
 export default class CreditasChallenge {
   static initialize () {
-    handleLoad()
+    handleLoad(
+      document.getElementById('parcelas'),
+      document.getElementById('garantia')
+    )
     this.registerEvents()
   }
 
@@ -238,7 +246,8 @@ export default class CreditasChallenge {
       document.querySelector('.quota span'),
       document.querySelector('.amount_container p'),
       document.getElementById('parcelas'),
-      document.getElementById('valor-emprestimo')
+      document.getElementById('valor-emprestimo'),
+      document.querySelector('.tax__container p')
     )
 
     handleChangeRangeWarranty(
