@@ -137,35 +137,41 @@ export function handleChangeRangeWarranty (
 }
 
 export function handleChangeWarrantyType (
-  warrantyElement
+  warrantyElement,
+  installmentsElement
 ) {
   warrantyElement.addEventListener('change', function (event) {
-    resetPage(document.getElementById('parcelas'), utils.selectedWarranty(event.target.value))
+    resetPage(installmentsElement, utils.selectedWarranty(event.target.value))
   })
 }
 
-export function handleBlurWarrantyTextInput (textInputWarranty) {
-  textInputWarranty.addEventListener('input', function (event) {
-    textInputWarranty.value = 'R$ ' + (event.target.value).split('R$ ')[1]
+export function handleBlurWarrantyTextInput (
+  textInputWarrantyElement,
+  rangeWarrantyElement,
+  textInputLoanElement,
+  rangeLoanElement,
+  warrantyTypeElement
+) {
+  textInputWarrantyElement.addEventListener('input', function (event) {
+    textInputWarrantyElement.value = 'R$ ' + (event.target.value).split('R$ ')[1]
     if ((event.target.value).split('R$ ')[1] === 'undefined') {
-      textInputWarranty.value = 'R$ '
+      textInputWarrantyElement.value = 'R$ '
     }
   })
-  textInputWarranty.addEventListener('blur', function (event) {
+  textInputWarrantyElement.addEventListener('blur', function (event) {
     var value = event.target.value
-    const rangeWarranty = document.getElementById('valor-garantia-range')
     value = inputBlur(
-      textInputWarranty,
-      rangeWarranty,
+      textInputWarrantyElement,
+      rangeWarrantyElement,
       value
     )
     if (isNaN(value)) {
-      textInputWarranty.value = utils.currencyFormatter(rangeWarranty.getAttribute('min'))
+      textInputWarrantyElement.value = utils.currencyFormatter(rangeWarrantyElement.getAttribute('min'))
     }
-    const maxValue = setMaxLoan(value, utils.selectedWarranty(document.getElementById('garantia').value).maxLoan)
-    updateMaxValue(maxValue, document.getElementById('valor-emprestimo-range'))
-    document.getElementById('valor-emprestimo').value = utils.currencyFormatter(
-      document.getElementById('valor-emprestimo-range').value
+    const maxValue = setMaxLoan(value, utils.selectedWarranty(warrantyTypeElement.value).maxLoan)
+    updateMaxValue(maxValue, rangeLoanElement)
+    textInputLoanElement.value = utils.currencyFormatter(
+      rangeLoanElement.value
     )
     updateCard()
   })
@@ -228,14 +234,19 @@ export default class CreditasChallenge {
   static registerEvents () {
     Submit(document.querySelector('.form'))
     handleBlurWarrantyTextInput(
-      document.getElementById('valor-garantia')
+      document.getElementById('valor-garantia'),
+      document.getElementById('valor-garantia-range'),
+      document.getElementById('valor-emprestimo'),
+      document.getElementById('valor-emprestimo-range'),
+      document.getElementById('garantia')
     )
     handleBlurLoanTextInput(
       document.getElementById('valor-emprestimo'),
       document.getElementById('valor-emprestimo-range')
     )
     handleChangeWarrantyType(
-      document.getElementById('garantia')
+      document.getElementById('garantia'),
+      document.getElementById('parcelas')
     )
     handleChangeQuotaValue(
       document.querySelector('.quota span'),
