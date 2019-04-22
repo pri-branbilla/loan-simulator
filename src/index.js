@@ -2,7 +2,7 @@ import './static/styles.css'
 import * as utils from './lib/utils'
 import * as helper from './lib/eventsHelper'
 
-const updateCard = () => {
+export const updateCard = () => {
   helper.changeInstallmentValue(
     document.querySelector('.amount_container p'),
     document.querySelector('.quota span'),
@@ -12,7 +12,7 @@ const updateCard = () => {
   )
 }
 
-const changeOptions = (selectElement, selectedOption) => {
+export const changeOptions = (selectElement, selectedOption) => {
   const loanRange = document.getElementById('valor-emprestimo-range')
   const loanInput = document.getElementById('valor-emprestimo')
   const warrantyRange = document.getElementById('valor-garantia-range')
