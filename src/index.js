@@ -81,13 +81,16 @@ export function handleChangeQuotaValue (
 
 export function handleChangeRangeWarranty (
   warrantyRangeElement,
-  vehicleWarrantyElement
+  vehicleWarrantyElement,
+  loanAmountRangeElement,
+  loanAmountElement,
+  warrantyTypeElement
 ) {
   warrantyRangeElement.addEventListener('change', function (event) {
-    const maxValue = utils.setMaxLoan(event.target.value, utils.selectedWarranty(document.getElementById('garantia').value).maxLoan)
-    helper.updateMaxValue(maxValue, document.getElementById('valor-emprestimo-range'))
-    document.getElementById('valor-emprestimo').value = utils.currencyFormatter(
-      document.getElementById('valor-emprestimo-range').value
+    const maxValue = utils.setMaxLoan(event.target.value, utils.selectedWarranty(warrantyTypeElement.value).maxLoan)
+    helper.updateMaxValue(maxValue, loanAmountRangeElement)
+    loanAmountElement.value = utils.currencyFormatter(
+      loanAmountRangeElement.value
     )
     vehicleWarrantyElement.value =
       utils.currencyFormatter(Number(event.target.value))
@@ -217,7 +220,10 @@ export default class CreditasChallenge {
 
     handleChangeRangeWarranty(
       document.getElementById('valor-garantia-range'),
-      document.getElementById('valor-garantia')
+      document.getElementById('valor-garantia'),
+      document.getElementById('valor-emprestimo-range'),
+      document.getElementById('valor-emprestimo'),
+      document.getElementById('garantia')
     )
 
     handleChangeLoanAmount(
