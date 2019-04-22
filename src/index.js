@@ -1,4 +1,4 @@
-import './styles.css'
+import './static/styles.css'
 
 const utils = require('./lib/utils.js')
 
