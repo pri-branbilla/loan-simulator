@@ -96,10 +96,7 @@ export function handleBlurWarrantyTextInput (
   warrantyTypeElement
 ) {
   textInputWarrantyElement.addEventListener('input', function (event) {
-    textInputWarrantyElement.value = 'R$ ' + (event.target.value).split('R$ ')[1]
-    if ((event.target.value).split('R$ ')[1] === 'undefined') {
-      textInputWarrantyElement.value = 'R$ '
-    }
+    helper.formatInput(textInputWarrantyElement, event.target.value)
   })
   textInputWarrantyElement.addEventListener('blur', function (event) {
     var value = event.target.value
@@ -125,10 +122,7 @@ export function handleBlurLoanTextInput (
   rangeLoanElement
 ) {
   textInputLoanElement.addEventListener('input', function (event) {
-    textInputLoanElement.value = 'R$ ' + (event.target.value).split('R$ ')[1]
-    if ((event.target.value).split('R$ ')[1] === 'undefined') {
-      textInputLoanElement.value = 'R$ '
-    }
+    helper.formatInput(textInputLoanElement, event.target.value)
   })
   textInputLoanElement.addEventListener('blur', function (event) {
     var value = event.target.value

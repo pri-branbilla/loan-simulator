@@ -4,7 +4,8 @@ import {
   toStringFormValues,
   updateMaxValue,
   inputBlur,
-  changeInstallmentValue
+  changeInstallmentValue,
+  formatInput
 } from '../src/lib/eventsHelper'
 import { defaultPage } from '../src/lib/constants'
 
@@ -69,6 +70,19 @@ Total R$100,513.60`
       expect(quota.innerHTML).toBe('4188,06')
       expect(tax.innerHTML).toBe('1,111 %')
       expect(total.innerHTML).toBe('R$100,513.60')
+    })
+  })
+
+  describe('Method: formatInput', () => {
+    it('should format text on input event', () => {
+      const warrantyInput = document.getElementById('valor-garantia')
+      formatInput(warrantyInput, 'd')
+      expect(warrantyInput.value).toBe('R$ undefined')
+    })
+    it('should format text on input event', () => {
+      const warrantyInput = document.getElementById('valor-garantia')
+      formatInput(warrantyInput, 'R$ undefined')
+      expect(warrantyInput.value).toBe('R$ ')
     })
   })
 

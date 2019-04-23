@@ -60,3 +60,10 @@ export const toStringFormValues = values => {
     `\nTotal ${utils.currencyFormatter(finalValue)}`
   )
 }
+
+export const formatInput = (textInput, inputValue) => {
+  textInput.value = 'R$ ' + (inputValue).split('R$ ')[1]
+  if ((inputValue).split('R$ ')[1] === 'undefined') {
+    textInput.value = 'R$ '
+  }
+}
