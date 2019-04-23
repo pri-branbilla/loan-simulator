@@ -99,15 +99,7 @@ export function handleBlurWarrantyTextInput (
     helper.formatInput(textInputWarrantyElement, event.target.value)
   })
   textInputWarrantyElement.addEventListener('blur', function (event) {
-    var value = event.target.value
-    value = helper.inputBlur(
-      textInputWarrantyElement,
-      rangeWarrantyElement,
-      value
-    )
-    if (isNaN(value)) {
-      textInputWarrantyElement.value = utils.currencyFormatter(rangeWarrantyElement.getAttribute('min'))
-    }
+    var value = helper.formatOnBlur(textInputWarrantyElement, rangeWarrantyElement, event.target.value)
     const maxValue = utils.setMaxLoan(value, utils.selectedWarranty(warrantyTypeElement.value).maxLoan)
     helper.updateMaxValue(maxValue, rangeLoanElement)
     textInputLoanElement.value = utils.currencyFormatter(
@@ -125,15 +117,7 @@ export function handleBlurLoanTextInput (
     helper.formatInput(textInputLoanElement, event.target.value)
   })
   textInputLoanElement.addEventListener('blur', function (event) {
-    var value = event.target.value
-    value = helper.inputBlur(
-      textInputLoanElement,
-      rangeLoanElement,
-      value
-    )
-    if (isNaN(value)) {
-      textInputLoanElement.value = utils.currencyFormatter(rangeLoanElement.getAttribute('min'))
-    }
+    helper.formatOnBlur(textInputLoanElement, rangeLoanElement, event.target.value)
     updateCard()
   })
 }

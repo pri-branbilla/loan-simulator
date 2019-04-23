@@ -5,7 +5,8 @@ import {
   updateMaxValue,
   inputBlur,
   changeInstallmentValue,
-  formatInput
+  formatInput,
+  formatOnBlur
 } from '../src/lib/eventsHelper'
 import { defaultPage } from '../src/lib/constants'
 
@@ -104,6 +105,21 @@ Total R$100,513.60`
       const input = document.getElementById('valor-emprestimo')
       const value = inputBlur(input, range, 'R$ 1.000,00')
       expect(value).toBe('3000')
+    })
+  })
+
+  describe('Method: formatOnBlur', () => {
+    it('should format value after blur event', () => {
+      const range = document.getElementById('valor-emprestimo-range')
+      const input = document.getElementById('valor-emprestimo')
+      formatOnBlur(input, range, 'R$ 50.000,00')
+      expect(input.value).toBe('R$50,000.00')
+    })
+    it('should set the min value after receiving invalid value', () => {
+      const range = document.getElementById('valor-emprestimo-range')
+      const input = document.getElementById('valor-emprestimo')
+      formatOnBlur(input, range, 'R$ sadaevafe')
+      expect(input.value).toBe('R$3,000.00')
     })
   })
 })

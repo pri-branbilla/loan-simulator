@@ -67,3 +67,15 @@ export const formatInput = (textInput, inputValue) => {
     textInput.value = 'R$ '
   }
 }
+
+export const formatOnBlur = (textInput, rangeInput, inputValue) => {
+  var value = inputBlur(
+    textInput,
+    rangeInput,
+    inputValue
+  )
+  if (isNaN(value)) {
+    textInput.value = utils.currencyFormatter(rangeInput.getAttribute('min'))
+  }
+  return value
+}
